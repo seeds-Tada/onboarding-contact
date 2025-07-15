@@ -6,20 +6,74 @@ require_once 'private/bootstrap.php';
 require_once 'private/database.php';
 
 // 実装
+$bool = true;
 
-?>
+$name_kanji = !empty($_POST['name-kanji']) ? $_POST['name-kanji'] : $bool = false;
+$name_furigana = !empty($_POST['name-hurigana']) ? $_POST['name-hurigana'] : $bool = false;
+$email = !empty($_POST['email']) ? $_POST['email'] : $bool = false;
+$gender = !empty($_POST['gender']) ? $_POST['gender'] : $bool = false;
 
+$address_number_1 = !empty($_POST['address-number-1']) ? $_POST['address-number-1'] : $bool = false;
+$address_number_2 = !empty($_POST['address-number-2']) ? $_POST['address-number-2'] : $bool = false;
+$address_todohuken = !empty($_POST['address-todohuken']) ? $_POST['address-todohuken'] : $bool = false;
+$address_shikutyoson = !empty($_POST['address-shikutyoson']) ? $_POST['address-shikutyoson'] : $bool = false;
+$address_soreikou = !empty($_POST['address-soreikou']) ? $_POST['address-soreikou'] : $bool = false;
+$address_tatemono = !empty($_POST['tatemono']) ? $_POST['tatemono'] : "";		//必須ではない
+
+$contact = !empty($_POST['contact']) ? $_POST['contact'] : $bool = false;
+
+$keiyu_kazoku = !empty($_POST['keiyu-kazoku']) ? $_POST['keiyu-kazoku'] : "off";		//必須ではない
+$keiyu_tomodati = !empty($_POST['keiyu-tomodati']) ? $_POST['keiyu-tomodati'] : "off";		//必須ではない
+$keiyu_sinbun = !empty($_POST['keiyu-sinbun']) ? $_POST['keiyu-sinbun'] : "off";		//必須ではない
+$keiyu_radio = !empty($_POST['keiyu-radio']) ? $_POST['keiyu-radio'] : "off";		//必須ではない
+$keiyu_web = !empty($_POST['keiyu-web']) ? $_POST['keiyu-web'] : "off";		//必須ではない
+$tmp = [];
+$input = array(
+	"name_kanji" => $name_kanji,
+	"name_hurigana" => $name_furigana,
+	"email" => $email,
+	"gender" => $gender,
+	"address_number_1" => $address_number_1,
+	"address_number_2" => $address_number_2,
+	"address_todohuken" => $address_todohuken,
+	"address_shikutyouson" => $address_shikutyoson,
+	"address_soreikou" => $address_soreikou,
+	"address_tatemono" => $address_tatemono,
+	"contact" => $contact,
+	"keiyu_kazoku" => $keiyu_kazoku,
+	"keiyu_tomodati" => $keiyu_tomodati,
+	"keiyu_sinbun" => $keiyu_sinbun,
+	"keiyu_radio" => $keiyu_radio,
+	"keiyu_web" => $keiyu_web,
+	"tmp" => $tmp...,
+);
+
+if($bool) {
+	//echo("{$input}");
+	echo(check($input));
+	// foreach($input as $name => $naiyo) {
+	// 	echo($name . ": " . $naiyo . "<br>");
+	// }
+	// var_dump($tmp);
+}else {
+	echo(input($input));
+}
+
+// value={$input['']}
+
+function input($input) {
+	return"
 <!-- 描画するHTML -->
 <!DOCTYPE html>
-<html lang="js">
+<html lang='ja'>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset='UTF-8'>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 	<title>onboarding-contact</title>
 </head>
 <body>
 	<div>
-		<form action="thanks.php" method="POST">
+		<form action='' method='POST' >
 			<table>
 				<tr>
 					<td>*内容は必須項目です</td>
@@ -27,110 +81,110 @@ require_once 'private/database.php';
 				</tr>
 				<tr>
 					<td>氏名*</td>
-					<td><input type="text"></td>
+					<td><input type='text' name='name-kanji' required></td>
 				</tr>
 				<tr>
 					<td>フリガナ*</td>
-					<td><input type="text"></td>
+					<td><input type='text' name='name-hurigana' required></td>
 				</tr>
 				<tr>
 					<td>メールアドレス*</td>
-					<td><input type="email"></td>
+					<td><input type='email' name='email' required></td>
 				</tr>
 				<tr>
 					<td>性別*</td>
 					<td>
-						<label>女性<input type="radio" name="gender"></label>
-						<label>男性<input type="radio" name="gender"></label>
+						<label>女性<input type='radio' name='gender' value='male'></label>
+						<label>男性<input type='radio' name='gender' value='female'></label>
 					</td>
 				</tr>
 				<tr>
 					<td>住所（郵便番号）*</td>
 					<td>
 						<div>
-							<input type="number"> - <input type="number">
+							<input type='number' name='address-number-1' required> - <input type='number' name='address-number-2' required>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>住所（都道府県）*</td>
 					<td>
-						<select>
-							<option selected disabled>選択してください</option>
-							<option>北海道</option>
-							<option>青森県</option>
-							<option>岩手県</option>
-							<option>宮城県</option>
-							<option>秋田県</option>
-							<option>山形県</option>
-							<option>福島県</option>
-							<option>茨城県</option>
-							<option>栃木県</option>
-							<option>群馬県</option>
-							<option>埼玉県</option>
-							<option>千葉県</option>
-							<option>東京都</option>
-							<option>神奈川県</option>
-							<option>山梨県</option>
-							<option>長野県</option>
-							<option>新潟県</option>
-							<option>富山県</option>
-							<option>石川県</option>
-							<option>福井県</option>
-							<option>岐阜県</option>
-							<option>静岡県</option>
-							<option>愛知県</option>
-							<option>三重県</option>
-							<option>滋賀県</option>
-							<option>京都府</option>
-							<option>大阪府</option>
-							<option>兵庫県</option>
-							<option>奈良県</option>
-							<option>和歌山県</option>
-							<option>鳥取県</option>
-							<option>香川県</option>
-							<option>愛媛県</option>
-							<option>高知県</option>
-							<option>福岡県</option>
-							<option>佐賀県</option>
-							<option>長崎県</option>
-							<option>熊本県</option>
-							<option>大分県</option>
-							<option>宮崎県</option>
-							<option>鹿児島県</option>
-							<option>沖縄県</option>
+						<select name='address-todohuken' required>
+							<option value=' selected disabled>選択してください</option>
+							<option value='北海道'>北海道</option>
+							<option value='青森県'>青森県</option>
+							<option value='岩手県'>岩手県</option>
+							<option value='宮城県'>宮城県</option>
+							<option value='秋田県'>秋田県</option>
+							<option value='山形県'>山形県</option>
+							<option value='福島県'>福島県</option>
+							<option value='茨城県'>茨城県</option>
+							<option value='栃木県'>栃木県</option>
+							<option value='群馬県'>群馬県</option>
+							<option value='埼玉県'>埼玉県</option>
+							<option value='千葉県'>千葉県</option>
+							<option value='東京都'>東京都</option>
+							<option value='神奈川県'>神奈川県</option>
+							<option value='山梨県'>山梨県</option>
+							<option value='長野県'>長野県</option>
+							<option value='新潟県'>新潟県</option>
+							<option value='富山県'>富山県</option>
+							<option value='石川県'>石川県</option>
+							<option value='福井県'>福井県</option>
+							<option value='岐阜県'>岐阜県</option>
+							<option value='静岡県'>静岡県</option>
+							<option value='愛知県'>愛知県</option>
+							<option value='三重県'>三重県</option>
+							<option value='滋賀県'>滋賀県</option>
+							<option value='京都府'>京都府</option>
+							<option value='大阪府'>大阪府</option>
+							<option value='兵庫県'>兵庫県</option>
+							<option value='奈良県'>奈良県</option>
+							<option value='和歌山県'>和歌山県</option>
+							<option value='鳥取県'>鳥取県</option>
+							<option value='香川県'>香川県</option>
+							<option value='愛媛県'>愛媛県</option>
+							<option value='高知県'>高知県</option>
+							<option value='福岡県'>福岡県</option>
+							<option value='佐賀県'>佐賀県</option>
+							<option value='長崎県'>長崎県</option>
+							<option value='熊本県'>熊本県</option>
+							<option value='大分県'>大分県</option>
+							<option value='宮城県'>宮崎県</option>
+							<option value='鹿児島県'>鹿児島県</option>
+							<option value='沖縄県'>沖縄県</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td>住所（市区町村）*</td>
-					<td><input type="text"></td>
+					<td><input type='text' name='address-shikutyoson' required></td>
 				</tr>
 				<tr>
 					<td>住所（それ以降の住所）*</td>
-					<td><input type="text"></td>
+					<td><input type='text' name='address-soreikou' required></td>
 				</tr>
 				<tr>
 					<td>住所（建物）</td>
-					<td><input type="text"></td>
+					<td><input type='text' name='address-tatemono'></td>
 				</tr>
 				<tr>
 					<td>お問い合わせ内容*</td>
-					<td><textarea></textarea></td>
+					<td><textarea name='contact' required></textarea></td>
 				</tr>
 				<tr>
 					<td>このフォームを知った経由（複数選択可）</td>
 					<td>
-						<label>家族から聞いて<input type="checkbox"></label>
-						<label>友達から聞いて<input type="checkbox"></label>
-						<label>新聞<input type="checkbox"></label>
-						<label>ラジオ<input type="checkbox"></label>
-						<label>Web<input type="checkbox"></label>
+						<label>家族から聞いて<input type=' checkbox' name='keiyu-kazoku' value='家族から聞いて'></label>
+						<label>友達から聞いて<input type=' checkbox' name='keiyu-tomodati' value='友達から聞いて'></label>
+						<label>新聞<input type='checkbox' name='keiyu-sinbun' value='新聞'></label>
+						<label>ラジオ<input type='checkbox' name='keiyu-radio' value='ラジオ'></label>
+						<label>Web<input type='checkbox' name='keiyu-web' value='Web'></label>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="submit">
+						<input type='submit'>
 					</td>
 				</tr>
 			</table>
@@ -138,3 +192,73 @@ require_once 'private/database.php';
 	</div>    
 </body>
 </html>
+	";
+}
+
+function check($input) {
+	return"
+	<!DOCTYPE html>
+	<html lang='ja'>
+	<head>
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<title>onboarding-contact</title>
+	</head>
+	<body>
+		<div>
+			<table>
+				<tr>
+					<td>氏名</td>
+					<td>{}</td>
+				</tr>
+				<tr>
+					<td>フリガナ</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>メールアドレス</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>性別</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>住所（郵便番号）</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>住所（都道府県）</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>住所（市区町村）</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>住所（それ以降の住所）</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>住所（建物）</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>お問合せ内容</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>このフォームを知った経由（複数選択可）</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+	</html>
+	";
+}
+
+
+
+?>
+
