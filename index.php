@@ -18,16 +18,16 @@ $address_number_2 = !empty($_POST['address-number-2']) ? $_POST['address-number-
 $address_todohuken = !empty($_POST['address-todohuken']) ? $_POST['address-todohuken'] : $bool = false;
 $address_shikutyoson = !empty($_POST['address-shikutyoson']) ? $_POST['address-shikutyoson'] : $bool = false;
 $address_soreikou = !empty($_POST['address-soreikou']) ? $_POST['address-soreikou'] : $bool = false;
-$address_tatemono = !empty($_POST['tatemono']) ? $_POST['tatemono'] : "";		//必須ではない
+$address_tatemono = !empty($_POST['address-tatemono']) ? $_POST['address-tatemono'] : "";		//必須ではない
 
 $contact = !empty($_POST['contact']) ? $_POST['contact'] : $bool = false;
 
-$keiyu_kazoku = !empty($_POST['keiyu-kazoku']) ? $_POST['keiyu-kazoku'] : "off";		//必須ではない
-$keiyu_tomodati = !empty($_POST['keiyu-tomodati']) ? $_POST['keiyu-tomodati'] : "off";		//必須ではない
-$keiyu_sinbun = !empty($_POST['keiyu-sinbun']) ? $_POST['keiyu-sinbun'] : "off";		//必須ではない
-$keiyu_radio = !empty($_POST['keiyu-radio']) ? $_POST['keiyu-radio'] : "off";		//必須ではない
-$keiyu_web = !empty($_POST['keiyu-web']) ? $_POST['keiyu-web'] : "off";		//必須ではない
-$tmp = [];
+$keiyu_kazoku = !empty($_POST['keiyu-kazoku']) ? $_POST['keiyu-kazoku'] : "";		//必須ではない
+$keiyu_tomodati = !empty($_POST['keiyu-tomodati']) ? $_POST['keiyu-tomodati'] : "";		//必須ではない
+$keiyu_sinbun = !empty($_POST['keiyu-sinbun']) ? $_POST['keiyu-sinbun'] : "";		//必須ではない
+$keiyu_radio = !empty($_POST['keiyu-radio']) ? $_POST['keiyu-radio'] : "";		//必須ではない
+$keiyu_web = !empty($_POST['keiyu-web']) ? $_POST['keiyu-web'] : "";		//必須ではない
+
 $input = array(
 	"name_kanji" => $name_kanji,
 	"name_hurigana" => $name_furigana,
@@ -36,7 +36,7 @@ $input = array(
 	"address_number_1" => $address_number_1,
 	"address_number_2" => $address_number_2,
 	"address_todohuken" => $address_todohuken,
-	"address_shikutyouson" => $address_shikutyoson,
+	"address_shikutyoson" => $address_shikutyoson,
 	"address_soreikou" => $address_soreikou,
 	"address_tatemono" => $address_tatemono,
 	"contact" => $contact,
@@ -45,35 +45,34 @@ $input = array(
 	"keiyu_sinbun" => $keiyu_sinbun,
 	"keiyu_radio" => $keiyu_radio,
 	"keiyu_web" => $keiyu_web,
-	"tmp" => $tmp...,
 );
 
-if($bool) {
-	//echo("{$input}");
+if(!empty($_POST['send'])) {
+	//echo"send";
+	header("location: thanks.php");
+}else if(!empty($_POST['back'])) {
+	//echo"back";
+	echo(input($input));
+}else if($bool) {
 	echo(check($input));
-	// foreach($input as $name => $naiyo) {
-	// 	echo($name . ": " . $naiyo . "<br>");
-	// }
-	// var_dump($tmp);
 }else {
 	echo(input($input));
 }
 
-// value={$input['']}
 
 function input($input) {
-	return"
-<!-- 描画するHTML -->
-<!DOCTYPE html>
-<html lang='ja'>
-<head>
+	$output = "
+	<!-- 描画するHTML -->
+	<!DOCTYPE html>
+	<html lang='ja'>
+	<head>
 	<meta charset='UTF-8'>
 	<meta name='viewport' content='width=device-width, initial-scale=1.0'>
 	<title>onboarding-contact</title>
-</head>
-<body>
+	</head>
+	<body>
 	<div>
-		<form action='' method='POST' >
+		<form action='' method='POST'>
 			<table>
 				<tr>
 					<td>*内容は必須項目です</td>
@@ -81,36 +80,50 @@ function input($input) {
 				</tr>
 				<tr>
 					<td>氏名*</td>
-					<td><input type='text' name='name-kanji' required></td>
+					<td><input type='text' name='name-kanji' value='".$input['name_kanji']."' required></td>
 				</tr>
 				<tr>
 					<td>フリガナ*</td>
-					<td><input type='text' name='name-hurigana' required></td>
+					<td><input type='text' name='name-hurigana' value='".$input['name_hurigana']."' required></td>
 				</tr>
 				<tr>
 					<td>メールアドレス*</td>
-					<td><input type='email' name='email' required></td>
+					<td><input type='email' name='email' value='".$input['email']."' required></td>
 				</tr>
 				<tr>
 					<td>性別*</td>
-					<td>
-						<label>女性<input type='radio' name='gender' value='male'></label>
-						<label>男性<input type='radio' name='gender' value='female'></label>
-					</td>
+					<td>";
+						if($input['gender'] === 'female') {
+							$output = $output . "
+								<label>女性<input type='radio' name='gender' value='female' checked></label>
+								<label>男性<input type='radio' name='gender' value='male'></label>
+							";
+						}else if($input['gender'] === 'male') {
+							$output = $output . "
+								<label>女性<input type='radio' name='gender' value='female'></label>
+								<label>男性<input type='radio' name='gender' value='male' checked></label>
+							";
+						}else {
+							$output = $output . "
+								<label>女性<input type='radio' name='gender' value='female'></label>
+								<label>男性<input type='radio' name='gender' value='male'></label>
+							";
+						}
+					$output = $output . "</td>
 				</tr>
 				<tr>
 					<td>住所（郵便番号）*</td>
 					<td>
 						<div>
-							<input type='number' name='address-number-1' required> - <input type='number' name='address-number-2' required>
+							<input type='number' name='address-number-1' value='".$input['address_number_1']."' required> - <input type='number' name='address-number-2' value='".$input['address_number_2']."' required>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>住所（都道府県）*</td>
 					<td>
-						<select name='address-todohuken' required>
-							<option value=' selected disabled>選択してください</option>
+						<select name='address-todohuken' value='".$input['address_todohuken']."' required>
+							<option value='' selected disabled>選択してください</option>
 							<option value='北海道'>北海道</option>
 							<option value='青森県'>青森県</option>
 							<option value='岩手県'>岩手県</option>
@@ -158,29 +171,53 @@ function input($input) {
 				</tr>
 				<tr>
 					<td>住所（市区町村）*</td>
-					<td><input type='text' name='address-shikutyoson' required></td>
+					<td><input type='text' name='address-shikutyoson' value='".$input['address_shikutyoson']."' required></td>
 				</tr>
 				<tr>
 					<td>住所（それ以降の住所）*</td>
-					<td><input type='text' name='address-soreikou' required></td>
+					<td><input type='text' name='address-soreikou' value='".$input['address_soreikou']."' required></td>
 				</tr>
 				<tr>
 					<td>住所（建物）</td>
-					<td><input type='text' name='address-tatemono'></td>
+					<td><input type='text' name='address-tatemono' value='".$input['address_tatemono']."'></td>
 				</tr>
 				<tr>
 					<td>お問い合わせ内容*</td>
-					<td><textarea name='contact' required></textarea></td>
+					<td><textarea name='contact' required>".$input['contact']."</textarea></td>
 				</tr>
 				<tr>
 					<td>このフォームを知った経由（複数選択可）</td>
-					<td>
-						<label>家族から聞いて<input type=' checkbox' name='keiyu-kazoku' value='家族から聞いて'></label>
-						<label>友達から聞いて<input type=' checkbox' name='keiyu-tomodati' value='友達から聞いて'></label>
-						<label>新聞<input type='checkbox' name='keiyu-sinbun' value='新聞'></label>
-						<label>ラジオ<input type='checkbox' name='keiyu-radio' value='ラジオ'></label>
-						<label>Web<input type='checkbox' name='keiyu-web' value='Web'></label>
-					</td>
+					<td>";
+					if($input['keiyu_kazoku']!==''){
+						$output = $output . "<label>家族から聞いて<input type='checkbox' name='keiyu-kazoku' value='家族から聞いて' checked></label>";
+					}else {
+						$output = $output . "<label>家族から聞いて<input type='checkbox' name='keiyu-kazoku' value='家族から聞いて'></label>";
+					}
+
+					if($input['keiyu_tomodati']!==''){
+						$output = $output . "<label>友達から聞いて<input type='checkbox' name='keiyu-tomodati' value='友達から聞いて' checked></label>";
+					}else {
+						$output = $output . "<label>友達から聞いて<input type='checkbox' name='keiyu-tomodati' value='友達から聞いて'></label>";
+					}
+
+					if($input['keiyu_sinbun']!==''){
+						$output = $output . "<label>新聞<input type='checkbox' name='keiyu-sinbun' value='新聞' checked></label>";
+					}else {
+						$output = $output . "<label>新聞<input type='checkbox' name='keiyu-sinbun' value='新聞'></label>";
+					}
+
+					if($input['keiyu_radio']!==''){
+						$output = $output . "<label>ラジオ<input type='checkbox' name='keiyu-radio' value='ラジオ' checked></label>";
+					}else {
+						$output = $output . "<label>ラジオ<input type='checkbox' name='keiyu-radio' value='ラジオ'></label>";
+					}
+
+					if($input['keiyu_web']!==''){
+						$output = $output . "<label>Web<input type='checkbox' name='keiyu-web' value='web' checked></label>";
+					}else {
+						$output = $output . "<label>Web<input type='checkbox' name='keiyu-web' value='web'></label>";
+					}
+					$output = $output . "</td>
 				</tr>
 				<tr>
 					<td>
@@ -190,13 +227,14 @@ function input($input) {
 			</table>
 		</form>
 	</div>    
-</body>
-</html>
+	</body>
+	</html>
 	";
+	return($output);
 }
 
 function check($input) {
-	return"
+	$output = "
 	<!DOCTYPE html>
 	<html lang='ja'>
 	<head>
@@ -206,59 +244,119 @@ function check($input) {
 	</head>
 	<body>
 		<div>
-			<table>
-				<tr>
-					<td>氏名</td>
-					<td>{}</td>
-				</tr>
-				<tr>
-					<td>フリガナ</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>メールアドレス</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>性別</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>住所（郵便番号）</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>住所（都道府県）</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>住所（市区町村）</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>住所（それ以降の住所）</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>住所（建物）</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>お問合せ内容</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>このフォームを知った経由（複数選択可）</td>
-					<td></td>
-				</tr>
-			</table>
+			<form action='' method='POST'>
+				<table>
+					<tr>
+						<td>氏名</td>
+						<td>
+							<input name='name-kanji' value='"."{$input['name_kanji']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>フリガナ</td>
+						<td>
+							<input name='name-hurigana' value='"."{$input['name_hurigana']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>メールアドレス</td>
+						<td>
+							<input name='email' value='"."{$input['email']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>性別</td>
+						<td>
+							<input name='gender' value='"."{$input['gender']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>住所（郵便番号）</td>
+						<td>
+							<input name='address-number-1' value='"."{$input['address_number_1']}"."' readonly></input> - <input name='address-number-2' value='"."{$input['address_number_2']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>住所（都道府県）</td>
+						<td>
+							<input name='address-todohuken' value='"."{$input['address_todohuken']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>住所（市区町村）</td>
+						<td>
+							<input name='address-shikutyoson' value='"."{$input['address_shikutyoson']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>住所（それ以降の住所）</td>
+						<td>
+							<input name='address-soreikou' value='"."{$input['address_soreikou']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>住所（建物）</td>
+						<td>
+							<input name='address-tatemono' value='"."{$input['address_tatemono']}"."' readonly></input>
+						</td>
+					</tr>
+					<tr>
+						<td>お問合せ内容</td>
+						<td>
+							<input name='contact' value='"."{$input['contact']}"."' readonly></input>
+						</td>
+					</tr>
+
+					<tr>
+						<td>このフォームを知った経由（複数選択可）</td>
+						<td>";
+							if($input['keiyu_kazoku']!==''){
+								$output = $output . "<input name='keiyu-kazoku' value='"."{$input['keiyu_kazoku']}"."' readonly></input>";
+							}else {
+								$output = $output . "<input name='keiyu-kazoku' readonly></input>";
+							}
+
+							if($input['keiyu_tomodati']!==''){
+								$output = $output . "<input name='keiyu-tomodati' value='"."{$input['keiyu_tomodati']}"."' readonly></input>";
+							}else {
+								$output = $output . "<input name='keiyu-tomodati' readonly></input>";
+							}
+	
+							if($input['keiyu_sinbun']!==''){
+								$output = $output . "<input name='keiyu-sinbun' value='"."{$input['keiyu_sinbun']}"."' readonly></input>";
+							}else {
+								$output = $output . "<input name='keiyu-sinbun' readonly></input>";
+							}
+
+							if($input['keiyu_radio']!==''){
+								$output = $output . "<input name='keiyu-radio' value='"."{$input['keiyu_radio']}"."' readonly></input>";
+							}else {
+								$output = $output . "<input name='keiyu-radio' readonly></input>";
+							}
+
+							if($input['keiyu_web']!==''){
+								$output = $output . "<input name='keiyu-web' value='"."{$input['keiyu_web']}"."' readonly></input>";
+							}else {
+								$output = $output . "<td nhidden><input ame='keiyu-web' readonly></input>";
+							}
+
+							$output = $output . "
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							<input type='submit' name='back' value='戻る'>
+						</td>
+						<td>
+							<input type='submit' name='send' value='送信'>
+						</td>
+					</tr>
+				</table>
+			</form>
 		</div>
 	</body>
-	</html>
-	";
+	</html>";
+
+	return($output);
 }
-
-
-
-?>
-
