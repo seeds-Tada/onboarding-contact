@@ -1,6 +1,10 @@
 <?php
-
+require_once 'private/bootstrap.php';
+require_once 'private/database.php';
 // 実装
+
+$connection = connectDB();
+
 
 ?>
 
