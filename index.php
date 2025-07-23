@@ -4,6 +4,7 @@
  * ---------------------------------------- */
 require_once 'private/bootstrap.php';
 require_once 'private/database.php';
+require_once 'validation.php';
 
 // 実装
 $bool = true;
@@ -33,8 +34,8 @@ $input = array(
 	"name_hurigana" => $name_furigana,
 	"email" => $email,
 	"gender" => $gender,
-	"address_number_1" => $address_post_1,
-	"address_number_2" => $address_post_2,
+	"address_post_1" => $address_post_1,
+	"address_post_2" => $address_post_2,
 	"address_todohuken" => $address_todohuken,
 	"address_shikutyoson" => $address_shikutyoson,
 	"address_soreikou" => $address_soreikou,
@@ -47,12 +48,23 @@ $input = array(
 	"keiyu_web" => $keiyu_web,
 );
 
+$error_mes = validatioin();
+
 if(!empty($_POST['send'])) {
-	header("location: thanks.php");
+	$GLOBALS["thanks_post"] = $_POST;
+	//header("location: thanks.php");
+	include'thanks.php';
 }else if(!empty($_POST['back'])) {
 	echo(input($input));
-}else if(!$bool) {
-	echo(input($input));
+}else if(!$bool) {	//テスト中
+	if(count($error_mes) !== 0) {
+		$output = "";
+		foreach($error_mes as $mes) {
+			$output = $output . "<div>".$mes."</div><br>";
+		}
+		echo($output);
+	}
+	//echo(input($input));
 }else {
 	echo(check($input));
 }
@@ -122,33 +134,33 @@ function input($input) {
 						</tr>
 						<tr>
 							<td>氏名<span style='color: red'>※</span></td>
-							<td><input type='text' name='name-kanji' value='".htmlspecialchars($input['name_kanji'])."' required></td>
+							<td><input type='text' name='name-kanji' value='".htmlspecialchars($input['name_kanji'])."' ></td>
 						</tr>
 						<tr>
 							<td>フリガナ<span style='color: red'>※</span></td>
-							<td><input type='text' name='name-hurigana' value='".htmlspecialchars($input['name_hurigana'])."' required></td>
+							<td><input type='text' name='name-hurigana' value='".htmlspecialchars($input['name_hurigana'])."' ></td>
 						</tr>
 						<tr>
 							<td>メールアドレス<span style='color: red'>※</span></td>
-							<td><input type='email' name='email' value='".htmlspecialchars($input['email'])."' required></td>
+							<td><input type='email' name='email' value='".htmlspecialchars($input['email'])."' ></td>
 						</tr>
 						<tr>
 							<td>性別<span style='color: red'>※</span></td>
 							<td>";
 								if($input['gender'] === 'female') {
 									$output = $output . "
-										<label>女性<input type='radio' name='gender' value='female' checked required></label>
-										<label>男性<input type='radio' name='gender' value='male' required></label>
+										<label>女性<input type='radio' name='gender' value='female' checked ></label>
+										<label>男性<input type='radio' name='gender' value='male' ></label>
 									";
 								}else if($input['gender'] === 'male') {
 									$output = $output . "
-										<label>女性<input type='radio' name='gender' value='female' required></label>
-										<label>男性<input type='radio' name='gender' value='male' checked required></label>
+										<label>女性<input type='radio' name='gender' value='female' ></label>
+										<label>男性<input type='radio' name='gender' value='male' checked ></label>
 									";
 								}else {
 									$output = $output . "
-										<label>女性<input type='radio' name='gender' value='female' required></label>
-										<label>男性<input type='radio' name='gender' value='male' required></label>
+										<label>女性<input type='radio' name='gender' value='female' ></label>
+										<label>男性<input type='radio' name='gender' value='male' ></label>
 									";
 								}
 							$output = $output . "</td>
@@ -157,14 +169,14 @@ function input($input) {
 							<td>住所（郵便番号）<span style='color: red'>※</span></td>
 							<td>
 								<div>
-									<input type='number' name='address-post-1' value='".htmlspecialchars($input['address_number_1'])."' required> - <input type='number' name='address-post-2' value='".htmlspecialchars($input['address_number_2'])."' required>
+									<input type='number' name='address-post-1' value='".htmlspecialchars($input['address_post_1'])."' > - <input type='number' name='address-post-2' value='".htmlspecialchars($input['address_post_2'])."' >
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>住所（都道府県）<span style='color: red'>※</span></td>
 							<td>";
-							$output = $output . "<select name='address-todohuken' required>";
+							$output = $output . "<select name='address-todohuken' >";
 								if(!empty($input['address_todohuken']) || in_array($input['address_todohuken'], $todohuken_array)) {
 									$output = $output . "<option value='' disabled>選択してください</option>";
 									foreach($todohuken_array as $todohuken) {
@@ -185,11 +197,11 @@ function input($input) {
 						</tr>
 						<tr>
 							<td>住所（市区町村）<span style='color: red'>※</span></td>
-							<td><input type='text' name='address-shikutyoson' value='".htmlspecialchars($input['address_shikutyoson'])."' required></td>
+							<td><input type='text' name='address-shikutyoson' value='".htmlspecialchars($input['address_shikutyoson'])."' ></td>
 						</tr>
 						<tr>
 							<td>住所（それ以降の住所）<span style='color: red'>※</span></td>
-							<td><input type='text' name='address-soreikou' value='".htmlspecialchars($input['address_soreikou'])."' required></td>
+							<td><input type='text' name='address-soreikou' value='".htmlspecialchars($input['address_soreikou'])."' ></td>
 						</tr>
 						<tr>
 							<td>住所（建物）</td>
@@ -197,7 +209,7 @@ function input($input) {
 						</tr>
 						<tr>
 							<td>お問い合わせ内容<span style='color: red'>※</span></td>
-							<td><textarea name='contact' required>".htmlspecialchars($input['contact'])."</textarea></td>
+							<td><textarea name='contact' >".htmlspecialchars($input['contact'])."</textarea></td>
 						</tr>
 						<tr>
 							<td>このフォームを知った経由（複数選択可）</td>
@@ -297,7 +309,7 @@ function check($input) {
 					<tr>
 						<td>住所（郵便番号）</td>
 						<td>
-							<input name='address-post-1' value='".htmlspecialchars($input['address_number_1'])."' readonly> - <input name='address-post-2' value='".htmlspecialchars($input['address_number_2'])."' readonly>
+							<input name='address-post-1' value='".htmlspecialchars($input['address_post_1'])."' readonly> - <input name='address-post-2' value='".htmlspecialchars($input['address_post_2'])."' readonly>
 						</td>
 					</tr>
 					<tr>

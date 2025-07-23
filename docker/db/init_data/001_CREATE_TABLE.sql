@@ -1,21 +1,15 @@
 -- contactsテールブルを作成
 
--- CREATE TABLE IF NOT EXISTS contacts (
---     contacts_id INT AUTO_INCREMENT PRIMARY KEY,
---     kanji VARCHAR() NOT NULL,
---     hurigana VARCHAR NOT NULL,
---     email VARCHAR NOT NULL,
---     gender VARCHAR NOT NULL,
---     post VARCHAR NOT NULL,
---     todohuken VARCHAR NOT NULL,
---     shikutyoson VARCHAR NOT NULL,
---     soreikou VARCHAR NOT NULL,
---     tatemono VARCHAR NOT NULL,
---     contact VARCHAR NOT NULL
--- );
-
--- CREATE TABLE IF NOT EXISTS keiyu (
---     keiyu_id INT AUTO_INCREMENT PRIMARY KEY,
---     keiyu VARCHAR NOT NULL,
---     FOREIGN KEY keiyu_id REFERENCES contacts(contacts_id)
--- );
+CREATE TABLE IF NOT EXISTS contacts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    kanji VARCHAR(100) NOT NULL,
+    hurigana VARCHAR(100) NOT NULL,
+    email VARCHAR(254) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    post VARCHAR(7) NOT NULL,
+    todohuken VARCHAR(10) NOT NULL,
+    shikutyoson VARCHAR(100) NOT NULL,
+    soreikou VARCHAR(100) NOT NULL,
+    tatemono VARCHAR(100),
+    contact VARCHAR(1000) NOT NULL
+);
