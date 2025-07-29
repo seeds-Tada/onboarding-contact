@@ -46,7 +46,24 @@ $keiyu = array(
 );
 
 $connection = connectDB();
-
+try {
+	$sql = "SELECT * FROM contacts WHERE id=10;";
+	$stmt = $connection->query($sql);
+	$results = $stmt->fetch_assoc();
+	$stmt->close();
+	foreach($results as $key => $val) {
+		echo($key . ": " . $val . "<br>");
+		//var_dump($result);
+		// foreach($result as $key => $val) {
+		// 	echo($key . ": " . $val . "<br>");
+		// }
+	}
+}catch(PDOException $e) {
+	echo("db error");
+}catch(Exception $e) {
+	echo("server error");
+}
+/*
 try {
 	$sql = "INSERT INTO contacts(kanji, hurigana, email, gender, post, todohuken, shikutyoson, soreikou, tatemono, contact) VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	$stmt = $connection->prepare($sql);
@@ -87,6 +104,7 @@ try {
 	echo("error");
 	echo($e);
 }
+*/
 ?>
 
 <!-- 描画するHTML -->
@@ -110,7 +128,7 @@ try {
 				foreach($input as $key => $val) {
 					echo($key . " : " . $val ."<br>");
 				}
-				echo("contactsテーブルで最後にインサートされた行のid: ".$insert_id."<br>");
+				//echo("contactsテーブルで最後にインサートされた行のid: ".$insert_id."<br>");
 			}
 		?>
 	</div>
