@@ -1,5 +1,5 @@
 <?php
-function check($input) {
+function check() {
 	$output = "
 		<!DOCTYPE html>
 		<html lang='ja'>
@@ -15,30 +15,30 @@ function check($input) {
 						<tr>
 							<td>氏名</td>
 							<td>
-								<input name='name-kanji' value='".htmlspecialchars($input['name_kanji'])."' readonly>
+								<input name='name-kanji' value='".htmlspecialchars($_POST['name-kanji'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>フリガナ</td>
 							<td>
-								<input name='name-hurigana' value='".htmlspecialchars($input['name_hurigana'])."' readonly>
+								<input name='name-hurigana' value='".htmlspecialchars($_POST['name-hurigana'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>メールアドレス</td>
 							<td>
-								<input name='email' value='".htmlspecialchars($input['email'])."' readonly>
+								<input name='email' value='".htmlspecialchars($_POST['email'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>性別</td>
 							<td>";
-								if($input['gender'] === "male") {
+								if($_POST['gender'] === "male") {
 									$output = $output . "
 									<input name='gender' value='male' hidden>
 									<input value='男性' readonly>
 									";
-								}else if($input['gender'] === "female"){
+								}else if($_POST['gender'] === "female"){
 									$output = $output . "
 										<input name='gender' value='female' hidden>
 										<input value='女性' readonly>
@@ -49,61 +49,61 @@ function check($input) {
 						<tr>
 							<td>住所（郵便番号）</td>
 							<td>
-								<input name='address-post-1' value='".htmlspecialchars($input['address_post_1'])."' readonly> - <input name='address-post-2' value='".htmlspecialchars($input['address_post_2'])."' readonly>
+								<input name='address-post-1' value='".htmlspecialchars($_POST['address-post-1'])."' readonly> - <input name='address-post-2' value='".htmlspecialchars($_POST['address-post-2'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>住所（都道府県）</td>
 							<td>
-								<input name='address-todohuken' value='".htmlspecialchars($input['address_todohuken'])."' readonly>
+								<input name='address-todohuken' value='".htmlspecialchars($_POST['address-todohuken'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>住所（市区町村）</td>
 							<td>
-								<input name='address-shikutyoson' value='".htmlspecialchars($input['address_shikutyoson'])."' readonly>
+								<input name='address-shikutyoson' value='".htmlspecialchars($_POST['address-shikutyoson'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>住所（それ以降の住所）</td>
 							<td>
-								<input name='address-soreikou' value='".htmlspecialchars($input['address_soreikou'])."' readonly>
+								<input name='address-soreikou' value='".htmlspecialchars($_POST['address-soreikou'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>住所（建物）</td>
 							<td>
-								<input name='address-tatemono' value='".htmlspecialchars($input['address_tatemono'])."' readonly>
+								<input name='address-tatemono' value='".htmlspecialchars($_POST['address-tatemono'])."' readonly>
 							</td>
 						</tr>
 						<tr>
 							<td>お問合せ内容</td>
 							<td>
-								<input name='contact' value='".htmlspecialchars($input['contact'])."' readonly>
+								<input name='contact' value='".htmlspecialchars($_POST['contact'])."' readonly>
 							</td>
 						</tr>
 
 						<tr>
 							<td>このフォームを知った経由（複数選択可）</td>
 							<td>";
-								if($input['keiyu_kazoku']!==''){
-									$output = $output . "<input style='display: block' name='keiyu-kazoku' value='".htmlspecialchars($input['keiyu_kazoku'])."' readonly>";
+								if($_POST['keiyu-kazoku']!==''){
+									$output = $output . "<input style='display: block' name='keiyu-kazoku' value='".htmlspecialchars($_POST['keiyu-kazoku'])."' readonly>";
 								}
 
-								if($input['keiyu_tomodati']!==''){
-									$output = $output . "<input style='display: block' name='keiyu-tomodati' value='".htmlspecialchars($input['keiyu_tomodati'])."' readonly>";
+								if($_POST['keiyu-tomodati']!==''){
+									$output = $output . "<input style='display: block' name='keiyu-tomodati' value='".htmlspecialchars($_POST['keiyu-tomodati'])."' readonly>";
 								}
 	
-								if($input['keiyu_sinbun']!==''){
-									$output = $output . "<input style='display: block' name='keiyu-sinbun' value='".htmlspecialchars($input['keiyu_sinbun'])."' readonly>";
+								if($_POST['keiyu-sinbun']!==''){
+									$output = $output . "<input style='display: block' name='keiyu-sinbun' value='".htmlspecialchars($_POST['keiyu-sinbun'])."' readonly>";
 								}
 
-								if($input['keiyu_radio']!==''){
-									$output = $output . "<input style='display: block' name='keiyu-radio' value='".htmlspecialchars($input['keiyu_radio'])."' readonly>";
+								if($_POST['keiyu-radio']!==''){
+									$output = $output . "<input style='display: block' name='keiyu-radio' value='".htmlspecialchars($_POST['keiyu-radio'])."' readonly>";
 								}
 
-								if($input['keiyu_web']!==''){
-									$output = $output . "<input style='display: block' name='keiyu-web' value='".htmlspecialchars($input['keiyu_web'])."' readonly>";
+								if($_POST['keiyu-web']!==''){
+									$output = $output . "<input style='display: block' name='keiyu-web' value='".htmlspecialchars($_POST['keiyu-web'])."' readonly>";
 								}
 
 								$output = $output . "

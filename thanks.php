@@ -1,110 +1,67 @@
 <?php
 require_once 'private/bootstrap.php';
 require_once 'private/database.php';
+require_once 'validation.php';
 // 実装
-$bool = true;
-
-$name_kanji = !empty($_POST['name-kanji']) ? $_POST['name-kanji'] : $bool = false;			//必須
-$name_furigana = !empty($_POST['name-hurigana']) ? $_POST['name-hurigana'] : $bool = false;	//必須
-$email = !empty($_POST['email']) ? $_POST['email'] : $bool = false;							//必須
-$gender = !empty($_POST['gender']) ? $_POST['gender'] : $bool = false;						//必須
-
-$address_post_1 = !empty($_POST['address-post-1']) ? $_POST['address-post-1'] : $bool = false;			//必須
-$address_post_2 = !empty($_POST['address-post-2']) ? $_POST['address-post-2'] : $bool = false;			//必須
-$address_todohuken = !empty($_POST['address-todohuken']) ? $_POST['address-todohuken'] : $bool = false;			//必須
-$address_shikutyoson = !empty($_POST['address-shikutyoson']) ? $_POST['address-shikutyoson'] : $bool = false;	//必須
-$address_soreikou = !empty($_POST['address-soreikou']) ? $_POST['address-soreikou'] : $bool = false;			//必須
-$address_tatemono = !empty($_POST['address-tatemono']) ? $_POST['address-tatemono'] : "";						//必須ではない
-
-$contact = !empty($_POST['contact']) ? $_POST['contact'] : $bool = false;				//必須
-
-$keiyu_kazoku = !empty($_POST['keiyu-kazoku']) ? $_POST['keiyu-kazoku'] : "";			//必須ではない
-$keiyu_tomodati = !empty($_POST['keiyu-tomodati']) ? $_POST['keiyu-tomodati'] : "";		//必須ではない
-$keiyu_sinbun = !empty($_POST['keiyu-sinbun']) ? $_POST['keiyu-sinbun'] : "";			//必須ではない
-$keiyu_radio = !empty($_POST['keiyu-radio']) ? $_POST['keiyu-radio'] : "";				//必須ではない
-$keiyu_web = !empty($_POST['keiyu-web']) ? $_POST['keiyu-web'] : "";					//必須ではない
-
-$contacts = array(
-	"name_kanji" => $name_kanji,
-	"name_hurigana" => $name_furigana,
-	"email" => $email,
-	"gender" => $gender,
-	"address_post" => $address_post_1.$address_post_2,
-	"address_todohuken" => $address_todohuken,
-	"address_shikutyoson" => $address_shikutyoson,
-	"address_soreikou" => $address_soreikou,
-	"address_tatemono" => $address_tatemono,
-	"contact" => $contact
-);
+$addressPost = $_POST['address-post-1'].$_POST['address-post-2'];
 
 $keiyu = array(
-	"keiyu_kazoku" => $keiyu_kazoku,
-	"keiyu_tomodati" => $keiyu_tomodati,
-	"keiyu_sinbun" => $keiyu_sinbun,
-	"keiyu_radio" => $keiyu_radio,
-	"keiyu_web" => $keiyu_web
+	"keiyu-kazoku" => $_POST['keiyu-kazoku'],
+	"keiyu-tomodati" => $_POST['keiyu-tomodati'],
+	"keiyu-sinbun" => $_POST['keiyu-sinbun'],
+	"keiyu-radio" => $_POST['keiyu-radio'],
+	"keiyu-web" => $_POST['keiyu-web']
 );
 
-$connection = connectDB();
-try {
-	$sql = "SELECT * FROM contacts WHERE id=10;";
-	$stmt = $connection->query($sql);
-	$results = $stmt->fetch_assoc();
-	$stmt->close();
-	foreach($results as $key => $val) {
-		echo($key . ": " . $val . "<br>");
-		//var_dump($result);
-		// foreach($result as $key => $val) {
-		// 	echo($key . ": " . $val . "<br>");
-		// }
-	}
-}catch(PDOException $e) {
-	echo("db error");
-}catch(Exception $e) {
-	echo("server error");
-}
-/*
-try {
-	$sql = "INSERT INTO contacts(kanji, hurigana, email, gender, post, todohuken, shikutyoson, soreikou, tatemono, contact) VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-	$stmt = $connection->prepare($sql);
-	$stmt->bind_param(
-		"ssssssssss",
-		$contacts['name_kanji'],
-		$contacts['name_hurigana'],
-		$contacts['email'],
-		$contacts['gender'],
-		$contacts['address_post'],
-		$contacts['address_todohuken'],
-		$contacts['address_shikutyoson'],
-		$contacts['address_soreikou'],
-		$contacts['address_tatemono'],
-		$contacts['contact']
-	);
-	$stmt->execute();
-	$insert_id = $stmt->insert_id;
-	$stmt->close();
-	
-	foreach($keiyu as $key => $val) {
-		if($val !== "") {
-			$sql = "INSERT INTO keiyu(contacts_id, keiyu) VALUE(?, ?);";
-			$stmt = $connection->prepare($sql);
-			$stmt->bind_param(
-				"is",
-				$insert_id,
-				$val
-			);
-			$stmt->execute();
-			$stmt->close();
+$error_mes = validatioin();
+
+if(count($error_mes) === 0) {			//バリデーションの結果に問題がなければDBにお問合せを保存
+	$connection = connectDB();
+	try {
+		$sql = "INSERT INTO contacts(kanji, hurigana, email, gender, post, todohuken, shikutyoson, soreikou, tatemono, contact) VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		$stmt = $connection->prepare($sql);
+		$stmt->bind_param(
+			"ssssssssss",
+			$_POST['name-kanji'],
+			$_POST['name-hurigana'],
+			$_POST['email'],
+			$_POST['gender'],
+			$addressPost,
+			$_POST['address-todohuken'],
+			$_POST['address-shikutyoson'],
+			$_POST['address-soreikou'],
+			$_POST['address-tatemono'],
+			$_POST['contact']
+		);
+		$stmt->execute();
+		$insert_id = $stmt->insert_id;
+		$stmt->close();
+
+		foreach($keiyu as $key => $val) {
+			if($val !== "") {
+				$sql = "INSERT INTO keiyu(contacts_id, keiyu) VALUE(?, ?);";
+				$stmt = $connection->prepare($sql);
+				$stmt->bind_param(
+					"is",
+					$insert_id,
+					$val
+				);
+				$stmt->execute();
+				$stmt->close();
+			}
 		}
+	}catch(PDOException $e) {
+		echo("error");
+	}catch(Exception $e) {
+		echo("error");
+		echo($e);
 	}
-	
-}catch(PDOException $e) {
-	echo("error");
-}catch(Exception $e) {
-	echo("error");
-	echo($e);
+}else {									//バリデーションの結果に問題があれば入力画面へ
+	echo(input());
+	if(!empty($_POST['input'])) {		//初めてページに訪れた時にはバリデーション結果を表示しない
+		error($error_mes);
+	}
 }
-*/
 ?>
 
 <!-- 描画するHTML -->
@@ -117,20 +74,5 @@ try {
 </head>
 <body>
 	<p>お問い合わせありがとうございました。</p>
-
-	<br>
-
-	<div>
-		<?php
-			if(empty($_POST)) {
-				echo("なし");
-			}else {
-				foreach($input as $key => $val) {
-					echo($key . " : " . $val ."<br>");
-				}
-				//echo("contactsテーブルで最後にインサートされた行のid: ".$insert_id."<br>");
-			}
-		?>
-	</div>
 </body>
 </html>

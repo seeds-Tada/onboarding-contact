@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS contacts (
     hurigana VARCHAR(100) NOT NULL,
     email VARCHAR(254) NOT NULL,
     gender VARCHAR(10) NOT NULL,
-    post VARCHAR(7) NOT NULL,
+    post INT(7) NOT NULL,
     todohuken VARCHAR(10) NOT NULL,
     shikutyoson VARCHAR(100) NOT NULL,
     soreikou VARCHAR(100) NOT NULL,

@@ -1,5 +1,5 @@
 <?php
-function input($input) {
+function input() {
 	$todohuken_array = [
 		'北海道',
 		'青森県',
@@ -63,25 +63,25 @@ function input($input) {
 						</tr>
 						<tr>
 							<td>氏名<span style='color: red'>※</span></td>
-							<td><input type='text' name='name-kanji' value='".htmlspecialchars($input['name_kanji'])."' ></td>
+							<td><input type='text' name='name-kanji' value='".htmlspecialchars($_POST['name-kanji'])."' ></td>
 						</tr>
 						<tr>
 							<td>フリガナ<span style='color: red'>※</span></td>
-							<td><input type='text' name='name-hurigana' value='".htmlspecialchars($input['name_hurigana'])."' ></td>
+							<td><input type='text' name='name-hurigana' value='".htmlspecialchars($_POST['name-hurigana'])."' ></td>
 						</tr>
 						<tr>
 							<td>メールアドレス<span style='color: red'>※</span></td>
-							<td><input type='email' name='email' value='".htmlspecialchars($input['email'])."' ></td>
+							<td><input type='email' name='email' value='".htmlspecialchars($_POST['email'])."' ></td>
 						</tr>
 						<tr>
 							<td>性別<span style='color: red'>※</span></td>
 							<td>";
-								if($input['gender'] === 'female') {
+								if($_POST['gender'] === 'female') {
 									$output = $output . "
 										<label>女性<input type='radio' name='gender' value='female' checked ></label>
 										<label>男性<input type='radio' name='gender' value='male' ></label>
 									";
-								}else if($input['gender'] === 'male') {
+								}else if($_POST['gender'] === 'male') {
 									$output = $output . "
 										<label>女性<input type='radio' name='gender' value='female' ></label>
 										<label>男性<input type='radio' name='gender' value='male' checked ></label>
@@ -98,7 +98,7 @@ function input($input) {
 							<td>住所（郵便番号）<span style='color: red'>※</span></td>
 							<td>
 								<div>
-									<input type='text' name='address-post-1' value='".htmlspecialchars($input['address_post_1'])."' > - <input type='text' name='address-post-2' value='".htmlspecialchars($input['address_post_2'])."' >
+									<input type='text' name='address-post-1' value='".htmlspecialchars($_POST['address-post-1'])."' > - <input type='text' name='address-post-2' value='".htmlspecialchars($_POST['address-post-2'])."' >
 								</div>
 							</td>
 						</tr>
@@ -106,10 +106,10 @@ function input($input) {
 							<td>住所（都道府県）<span style='color: red'>※</span></td>
 							<td>";
 							$output = $output . "<select name='address-todohuken' >";
-								if(!empty($input['address_todohuken']) || in_array($input['address_todohuken'], $todohuken_array)) {
+								if(!empty($_POST['address-todohuken']) || in_array($_POST['address-todohuken'], $todohuken_array)) {
 									$output = $output . "<option value='' disabled>選択してください</option>";
 									foreach($todohuken_array as $todohuken) {
-										if($todohuken === $input['address_todohuken']) {
+										if($todohuken === $_POST['address-todohuken']) {
 											$output = $output . "<option value='".$todohuken."' selected>".$todohuken."</option>";
 										}else {
 											$output = $output . "<option value='".$todohuken."'>".$todohuken."</option>";
@@ -126,48 +126,48 @@ function input($input) {
 						</tr>
 						<tr>
 							<td>住所（市区町村）<span style='color: red'>※</span></td>
-							<td><input type='text' name='address-shikutyoson' value='".htmlspecialchars($input['address_shikutyoson'])."' ></td>
+							<td><input type='text' name='address-shikutyoson' value='".htmlspecialchars($_POST['address-shikutyoson'])."' ></td>
 						</tr>
 						<tr>
 							<td>住所（それ以降の住所）<span style='color: red'>※</span></td>
-							<td><input type='text' name='address-soreikou' value='".htmlspecialchars($input['address_soreikou'])."' ></td>
+							<td><input type='text' name='address-soreikou' value='".htmlspecialchars($_POST['address-soreikou'])."' ></td>
 						</tr>
 						<tr>
 							<td>住所（建物）</td>
-							<td><input type='text' name='address-tatemono' value='".htmlspecialchars($input['address_tatemono'])."'></td>
+							<td><input type='text' name='address-tatemono' value='".htmlspecialchars($_POST['address-tatemono'])."'></td>
 						</tr>
 						<tr>
 							<td>お問い合わせ内容<span style='color: red'>※</span></td>
-							<td><textarea name='contact' >".htmlspecialchars($input['contact'])."</textarea></td>
+							<td><textarea name='contact' >".htmlspecialchars($_POST['contact'])."</textarea></td>
 						</tr>
 						<tr>
 							<td>このフォームを知った経由（複数選択可）</td>
 							<td>";
-							if($input['keiyu_kazoku']!==''){
+							if($_POST['keiyu-kazoku']!==''){
 								$output = $output . "<label style='display: block'>家族から聞いて<input type='checkbox' name='keiyu-kazoku' value='家族から聞いて' checked></label>";
 							}else {
 								$output = $output . "<label style='display: block'>家族から聞いて<input type='checkbox' name='keiyu-kazoku' value='家族から聞いて'></label>";
 							}
 
-							if($input['keiyu_tomodati']!==''){
+							if($_POST['keiyu-tomodati']!==''){
 								$output = $output . "<label style='display: block'>友達から聞いて<input type='checkbox' name='keiyu-tomodati' value='友達から聞いて' checked></label>";
 							}else {
 								$output = $output . "<label style='display: block'>友達から聞いて<input type='checkbox' name='keiyu-tomodati' value='友達から聞いて'></label>";
 							}
 
-							if($input['keiyu_sinbun']!==''){
+							if($_POST['keiyu-sinbun']!==''){
 								$output = $output . "<label style='display: block'>新聞<input type='checkbox' name='keiyu-sinbun' value='新聞' checked></label>";
 							}else {
 								$output = $output . "<label style='display: block'>新聞<input type='checkbox' name='keiyu-sinbun' value='新聞'></label>";
 							}
 
-							if($input['keiyu_radio']!==''){
+							if($_POST['keiyu-radio']!==''){
 								$output = $output . "<label style='display: block'>ラジオ<input type='checkbox' name='keiyu-radio' value='ラジオ' checked></label>";
 							}else {
 								$output = $output . "<label style='display: block'>ラジオ<input type='checkbox' name='keiyu-radio' value='ラジオ'></label>";
 							}
 
-							if($input['keiyu_web']!==''){
+							if($_POST['keiyu-web']!==''){
 								$output = $output . "<label style='display: block'>Web<input type='checkbox' name='keiyu-web' value='web' checked></label>";
 							}else {
 								$output = $output . "<label style='display: block'>Web<input type='checkbox' name='keiyu-web' value='web'></label>";
@@ -176,7 +176,7 @@ function input($input) {
 						</tr>
 						<tr>
 							<td>
-								<input type='submit'>
+								<input type='submit' name='input'>
 							</td>
 						</tr>
 					</table>

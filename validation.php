@@ -50,6 +50,7 @@ function validatioin() {
 	//氏名
 	if(empty($_POST['name-kanji'])) {
 		array_push($error_msg, "氏名が入力されていません。");
+		$_POST['name-kanji'] = "";
 	}else if(!is_string($_POST['name-kanji'])) {
 		array_push($error_msg, "氏名に文字列を入力してください。");
 	}
