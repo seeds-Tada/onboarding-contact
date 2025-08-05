@@ -1,4 +1,11 @@
 <?php
+use PHPMailer¥PHPMailer¥PHPMaier;
+use PHPMailer¥PHPMailer¥Exception;
+
+require_once 'PHPMailer/src/Exception.php';
+require_once 'PHPMailer/src/PHPMailer.php';
+require_once 'PHPMailer/src/SMTP.php';
+
 require_once 'private/bootstrap.php';
 require_once 'private/database.php';
 require_once 'validation.php';
@@ -56,12 +63,57 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 		echo("error");
 		echo($e);
 	}
+	/*
+	PHPMailerの実装
+
+	gmailのAppPasswordを設定するためには、
+	$mail_result = false;		//送信できたかどうかの確認。trueになっていれば送信成功
+	
+	$mail = new PHPMailer(true);
+
+	$smtp_Username = 'yourAddress@gmail.com';	//gmailのSMTPを利用するためのユーザー名
+	$smtp_Password = 'yourAppPassword';			//gmailのSMTPを利用するためのアプリパスワード
+
+	$From_mailAddress = '';		//メールの送信元のメールアドレス
+	$From_name = '';			//メールの送信元の名前
+	$To_mailAddress = '';		//メールの送信先のメールアドレス
+	$To_name = '';				//メールの送信先の名前
+
+	$mail_subject = 'onboardingのお問合せメール';										//メールのタイトル
+	$mail_body = nl2br(htmlspecialchars($_POST['contact'], ENT_QUOTES, 'UTF-8'));;	 //メールの本文
+
+	try {
+		$mail->CharSet = 'UTF-8';
+		$mail->Encoding = 'base64';
+
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';
+		$mail->SMTPAuth = true;
+		$mail->Username = $smtp_Username;
+		$mail->Password = $smtp_Password;
+		$mail->SMTPSecure = 'tls';
+		$mail->Port = 587;
+
+		$mail->setFrom($From_mailAddress, $From_name);
+		$mail->addAddress($To_mailAddress, $To_name);
+
+		$mail->isHTML();
+		$mail->Subject = $mail_subject;
+		$mail->Body = $mail_body;
+
+		$mail->send();
+		$mail_result = true;
+	}catch(Exception $e) {
+		echo("メールの送信に失敗しました: {$mail->ErrorInfo}");
+	}
+	*/
 }else {									//バリデーションの結果に問題があれば入力画面へ
 	echo(input());
 	if(!empty($_POST['input'])) {		//初めてページに訪れた時にはバリデーション結果を表示しない
 		error($error_mes);
 	}
 }
+
 ?>
 
 <!-- 描画するHTML -->
