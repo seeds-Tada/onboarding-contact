@@ -1,11 +1,9 @@
 <?php
-function error($error_mes) {
-	if(count($error_mes) !== 0) {
-		$output = "<div>";
-		foreach($error_mes as $mes) {
-			$output = $output . "<a>".$mes."</a><br>";
-		}
-        $output = $output . "</div>";
-		echo($output);
+$error_mes = validation();
+if(count($error_mes) !== 0) {
+	?><div><?php
+	foreach($error_mes as $mes) {
+		?><a><?php echo($mes); ?></a><br><?php
 	}
+	?></div><?php
 }

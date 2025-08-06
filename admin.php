@@ -9,7 +9,7 @@ $contactArray = [];
 $connection = connectDB();
 try {
 	$keiyuArray = [];
-	$sql = "SELECT * FROM keiyu;";
+	$sql = "SELECT * FROM sources;";
 	$stmt = mysqli_query($connection, $sql);
 	while($row = mysqli_fetch_assoc($stmt)) {
 		$keiyuArray[] = $row;
@@ -20,10 +20,10 @@ try {
 	$sql = "SELECT * FROM contacts;";
 	$stmt = mysqli_query($connection, $sql);
 	while($row = mysqli_fetch_assoc($stmt)) {
-		$row['keiyu'] = [];
+		$row['sources'] = [];
 		foreach($keiyuArray as $keiyu) {
 			if($row['id'] === $keiyu['contacts_id']) {
-				array_push($row['keiyu'], $keiyu['keiyu']);
+				array_push($row['sources'], $keiyu['source']);
 			}
 		}
 		$contactArray[] = $row;
@@ -70,15 +70,15 @@ try {
 					echo("<tr>");
 					foreach($result as $key => $val) {
 						if($key !== 'id') {
-							if($key !== 'keiyu') {
+							if($key !== 'sources') {
 								if($key !== 'post') {
-									echo("<td>" . $val . PHP_EOL."</td>");
+									echo("<td>" . htmlspecialchars($val) . "</td>");
 								}else {
-									echo("<td>" . substr_replace($val, "-", 3, 0) . PHP_EOL."</td>");
+									echo("<td>" . htmlspecialchars(substr_replace($val, "-", 3, 0)) . "</td>");
 								}
 							}else {
-								foreach($val as $val_keiyu){
-									echo("<td style='display: block'>".$val_keiyu."</td>");
+								foreach($val as $val_source){
+									echo("<td style='display: block'>" . htmlspecialchars($val_source) . "</td>");
 								}
 							}
 						}

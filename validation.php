@@ -1,49 +1,6 @@
 <?php
-function validatioin() {
-	$todohuken_array = array(
-		'北海道',
-		'青森県',
-		'岩手県',
-		'宮城県',
-		'秋田県',
-		'山形県',
-		'福島県',
-		'茨城県',
-		'栃木県',
-		'群馬県',
-		'埼玉県',
-		'千葉県',
-		'東京都',
-		'神奈川県',
-		'山梨県',
-		'長野県',
-		'新潟県',
-		'富山県',
-		'石川県',
-		'福井県',
-		'岐阜県',
-		'静岡県',
-		'愛知県',
-		'三重県',
-		'滋賀県',
-		'京都府',
-		'大阪府',
-		'兵庫県',
-		'奈良県',
-		'和歌山県',
-		'鳥取県',
-		'香川県',
-		'愛媛県',
-		'高知県',
-		'福岡県',
-		'佐賀県',
-		'長崎県',
-		'熊本県',
-		'大分県',
-		'宮城県',
-		'鹿児島県',
-		'沖縄県',
-	);
+function validation() {
+	require './enums/prefecture.php';
 	
 	$error_msg = [];
 
@@ -93,9 +50,9 @@ function validatioin() {
 		array_push($error_msg, "一つ目の郵便番号が入力されていません。");
 	}else {
 		if(!ctype_digit($_POST['address-post-1'])) {
-			array_push($error_msg, "一つ目に郵便番号に整数を入力してください。");
+			array_push($error_msg, "一つ目の郵便番号に整数を入力してください。");
 		}else if(mb_strlen($_POST['address-post-1']) !== 3){
-			array_push($error_msg, "一つ目に郵便番号に3桁の数字を入力してください。");
+			array_push($error_msg, "一つ目の郵便番号に3桁の数字を入力してください。");
 		}
 	}
 
@@ -106,7 +63,7 @@ function validatioin() {
 		if(!ctype_digit($_POST['address-post-2'])) {
 			array_push($error_msg, "二つ目の郵便番号に整数を入力してください。");
 		}else if(mb_strlen($_POST['address-post-2']) !== 4){
-			array_push($error_msg, "一つ目に郵便番号に4桁の数字を入力してください。");
+			array_push($error_msg, "二つ目の郵便番号に4桁の数字を入力してください。");
 		}
 	}
 
@@ -118,8 +75,8 @@ function validatioin() {
 			array_push($error_msg, "住所(都道府県)を正しく入力してください。");
 		}else {
 			$bool = true;
-			foreach($todohuken_array as $todohuken) {
-				if($todohuken === $_POST['address-todohuken']) {
+			foreach($prefectures as $prefecture) {
+				if($prefecture === $_POST['address-todohuken']) {
 					$bool = false;
 				}
 			}

@@ -1,10 +1,10 @@
 <?php
-use PHPMailer¥PHPMailer¥PHPMaier;
-use PHPMailer¥PHPMailer¥Exception;
+// use PHPMailer¥PHPMailer¥PHPMaier;
+// use PHPMailer¥PHPMailer¥Exception;
 
-require_once 'PHPMailer/src/Exception.php';
-require_once 'PHPMailer/src/PHPMailer.php';
-require_once 'PHPMailer/src/SMTP.php';
+// require_once 'PHPMailer/src/Exception.php';
+// require_once 'PHPMailer/src/PHPMailer.php';
+// require_once 'PHPMailer/src/SMTP.php';
 
 require_once 'private/bootstrap.php';
 require_once 'private/database.php';
@@ -20,12 +20,12 @@ $keiyu = array(
 	"keiyu-web" => $_POST['keiyu-web']
 );
 
-$error_mes = validatioin();
+$error_mes = validation();
 
 if(count($error_mes) === 0) {			//バリデーションの結果に問題がなければDBにお問合せを保存
 	$connection = connectDB();
 	try {
-		$sql = "INSERT INTO contacts(kanji, hurigana, email, gender, post, todohuken, shikutyoson, soreikou, tatemono, contact) VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		$sql = "INSERT INTO contacts(name, name_kana, email, gender, post, prefecture, city, detail, building, contact) VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		$stmt = $connection->prepare($sql);
 		$stmt->bind_param(
 			"ssssssssss",
@@ -46,7 +46,7 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 
 		foreach($keiyu as $key => $val) {
 			if($val !== "") {
-				$sql = "INSERT INTO keiyu(contacts_id, keiyu) VALUE(?, ?);";
+				$sql = "INSERT INTO sources(contacts_id, source) VALUE(?, ?);";
 				$stmt = $connection->prepare($sql);
 				$stmt->bind_param(
 					"is",
@@ -108,7 +108,7 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 	}
 	*/
 }else {									//バリデーションの結果に問題があれば入力画面へ
-	echo(input());
+	include'components/input.php';
 	if(!empty($_POST['input'])) {		//初めてページに訪れた時にはバリデーション結果を表示しない
 		error($error_mes);
 	}
@@ -117,14 +117,4 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 ?>
 
 <!-- 描画するHTML -->
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>onboarding-contact</title>
-</head>
-<body>
-	<p>お問い合わせありがとうございました。</p>
-</body>
-</html>
+<p>お問い合わせありがとうございました。</p>
