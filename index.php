@@ -52,7 +52,7 @@ $error_mes = validation();
 				}else {										//入力画面で全ての項目が入力されている
 					if(count($error_mes) !== 0) {			//バリデーションの結果に問題があれば入力画面へ
 						include'components/input.php';
-						if(!empty($_POST['input'])) {			//初めてページに訪れた時にはバリデーション結果を表示しない
+						if(!empty($_POST['input'])) {		//初めてページに訪れた時にはバリデーション結果を表示しない
 							include'components/error.php';
 						}
 					}else {									//全ての項目が入力されて、バリデーションの結果に問題がなければ確認画面へ
