@@ -5,17 +5,17 @@ function validation() {
 	$error_msg = [];
 
 	//氏名
-	if(empty($_POST['name-kanji'])) {
+	if(empty($_POST['name'])) {
 		array_push($error_msg, "氏名が入力されていません。");
-		$_POST['name-kanji'] = "";
-	}else if(!is_string($_POST['name-kanji'])) {
+		$_POST['name'] = "";
+	}else if(!is_string($_POST['name'])) {
 		array_push($error_msg, "氏名に文字列を入力してください。");
 	}
 
 	//フリガナ
-	if(empty($_POST['name-hurigana'])) {
+	if(empty($_POST['name-kana'])) {
 		array_push($error_msg, "フリガナが入力されていません。");
-	}else if(!is_string($_POST['name-hurigana'])) {
+	}else if(!is_string($_POST['name-kana'])) {
 		array_push($error_msg, "フリガナに文字列を入力してください。");
 	}
 
@@ -68,15 +68,15 @@ function validation() {
 	}
 
 	//都道府県
-	if(empty($_POST['address-todohuken'])) {
+	if(empty($_POST['address_prefecture'])) {
 		array_push($error_msg, "住所（都道府県）が入力されていません。");
 	}else{
-		if(!is_string($_POST['address-todohuken'])) {
+		if(!is_string($_POST['address_prefecture'])) {
 			array_push($error_msg, "住所(都道府県)を正しく入力してください。");
 		}else {
 			$bool = true;
 			foreach($prefectures as $prefecture) {
-				if($prefecture === $_POST['address-todohuken']) {
+				if($prefecture === $_POST['address_prefecture']) {
 					$bool = false;
 				}
 			}
@@ -87,22 +87,22 @@ function validation() {
 	}
 
 	//市区町村
-	if(empty($_POST['address-shikutyoson'])) {
+	if(empty($_POST['address-city'])) {
 		array_push($error_msg, "住所（市区町村）が入力されていません。");
-	}else if(!is_string($_POST['address-shikutyoson'])) {	
+	}else if(!is_string($_POST['address-city'])) {	
 		array_push($error_msg, "住所(市区町村)に文字列を入力してください。");
 	}
 
 	//それ以降
-	if(empty($_POST['address-soreikou'])) {
+	if(empty($_POST['address-detail'])) {
 		array_push($error_msg, "住所（それ以降の住所）が入力されていません。");
-	}else if(!is_string($_POST['address-soreikou'])) {	
+	}else if(!is_string($_POST['address-detail'])) {	
 		array_push($error_msg, "住所(それ以降の住所)に文字列を入力してください。");
 	}
 
 	//建物
-	if(!empty($_POST['address-tatemono'])) {
-		if(!is_string($_POST['address-tatemono'])) {
+	if(!empty($_POST['address-building'])) {
+		if(!is_string($_POST['address-building'])) {
 			array_push($error_msg, "文字列を入力してください。");
 		}
 	}
@@ -117,36 +117,36 @@ function validation() {
 	
 	$keiyu_bool = false;
 	//経由　家族
-	if(!empty($_POST['keiyu-kazoku'])) {
-		if(!is_string($_POST['keiyu-kazoku']) || $_POST['keiyu-kazoku'] !== "家族から聞いて") {
+	if(!empty($_POST['source-family'])) {
+		if(!is_string($_POST['source-family']) || $_POST['source-family'] !== "家族から聞いて") {
 			$keiyu_bool = true;
 		}
 	}
 
 	//経由　友達
-	if(!empty($_POST['keiyu-tomodati'])) {
-		if(!is_string($_POST['keiyu-tomodati']) || $_POST['keiyu-tomodati'] !== "友達から聞いて") {
+	if(!empty($_POST['source-friend'])) {
+		if(!is_string($_POST['source-friend']) || $_POST['source-friend'] !== "友達から聞いて") {
 			$keiyu_bool = true;
 		}
 	}
 
 	//経由　新聞
-	if(!empty($_POST['keiyu-sinbun'])) {
-		if(!is_string($_POST['keiyu-sinbun']) || $_POST['keiyu-sinbun'] !== "新聞") {
+	if(!empty($_POST['source-newspaper'])) {
+		if(!is_string($_POST['source-newspaper']) || $_POST['source-newspaper'] !== "新聞") {
 			$keiyu_bool = true;
 		}
 	}
 
 	//経由　ラジオ
-	if(!empty($_POST['keiyu-radio'])) {
-		if(!is_string($_POST['keiyu-radio']) || $_POST['keiyu-radio'] !== "ラジオ") {
+	if(!empty($_POST['source-radio'])) {
+		if(!is_string($_POST['source-radio']) || $_POST['source-radio'] !== "ラジオ") {
 			$keiyu_bool = true;
 		}
 	}
 
 	//経由　web
-	if(!empty($_POST['keiyu-web'])) {
-		if(!is_string($_POST['keiyu-web']) || $_POST['keiyu-web'] !== "web") {
+	if(!empty($_POST['source-web'])) {
+		if(!is_string($_POST['source-web']) || $_POST['source-web'] !== "web") {
 			$keiyu_bool = true;
 		}
 	}

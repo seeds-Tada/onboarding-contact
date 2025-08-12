@@ -19,12 +19,14 @@ define('DB_PASSWORD', 'password');
  *
  * @return mysqli|void
  */
-function connectDB()
+function connectPDO()
 {
-    $connection = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
-    if ($connection->error) {
-        die("Connection failed: " . $connection->connect_error);
+    $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
+    try {
+        $connection = new PDO($dsn, DB_USER, DB_PASSWORD);
+        return $connection;
+    }catch(PDOException $e)
+    {
+        die("Connection failed: " . $e-getMessage());
     }
-
-    return $connection;
 }

@@ -6,29 +6,32 @@ require_once 'private/database.php';
 
 $keiyuArray = [];
 $contactArray = [];
-$connection = connectDB();
+$connection = connectPDO();
 try {
 	$keiyuArray = [];
 	$sql = "SELECT * FROM sources;";
-	$stmt = mysqli_query($connection, $sql);
-	while($row = mysqli_fetch_assoc($stmt)) {
-		$keiyuArray[] = $row;
+	$stmt = $connection->query($sql);
+	$result_sources = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	foreach($result_sources as $source) {
+		$keiyuArray[] = $source;
 	}
-	$stmt->close();
+	$stmt = null;
 
 	$contactArray = [];
 	$sql = "SELECT * FROM contacts;";
-	$stmt = mysqli_query($connection, $sql);
-	while($row = mysqli_fetch_assoc($stmt)) {
-		$row['sources'] = [];
+	$stmt = $connection->query($sql);
+	$result_contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach($result_contacts as $contact) {
+		$contact['sources'] = [];
 		foreach($keiyuArray as $keiyu) {
-			if($row['id'] === $keiyu['contacts_id']) {
-				array_push($row['sources'], $keiyu['source']);
+			if($contact['id'] === $keiyu['contacts_id']) {
+				array_push($contact['sources'], $keiyu['source']);
 			}
 		}
-		$contactArray[] = $row;
+		$contactArray[] = $contact;
 	}
-	$stmt->close();
+	$stmt = null;
 }catch(PDOException $e) {
 	echo("error");
 }catch(Exception $e) {

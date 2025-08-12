@@ -3,13 +3,13 @@
 		<tr>
 			<td>氏名</td>
 			<td>
-				<input name='name-kanji' value='<?php echo(htmlspecialchars($_POST['name-kanji'])); ?>' readonly>
+				<input name='name' value='<?php echo(htmlspecialchars($_POST['name'])); ?>' readonly>
 			</td>
 		</tr>
 		<tr>
 			<td>フリガナ</td>
 			<td>
-				<input name='name-hurigana' value='<?php echo(htmlspecialchars($_POST['name-hurigana'])); ?>' readonly>
+				<input name='name-kana' value='<?php echo(htmlspecialchars($_POST['name-kana'])); ?>' readonly>
 			</td>
 		</tr>
 		<tr>
@@ -45,25 +45,25 @@
 		<tr>
 			<td>住所（都道府県）</td>
 			<td>
-				<input name='address-todohuken' value='<?php echo(htmlspecialchars($_POST['address-todohuken'])); ?>' readonly>
+				<input name='address_prefecture' value='<?php echo(htmlspecialchars($_POST['address_prefecture'])); ?>' readonly>
 			</td>
 		</tr>
 		<tr>
 			<td>住所（市区町村）</td>
 			<td>
-				<input name='address-shikutyoson' value='<?php echo(htmlspecialchars($_POST['address-shikutyoson'])); ?>' readonly>
+				<input name='address-city' value='<?php echo(htmlspecialchars($_POST['address-city'])); ?>' readonly>
 			</td>
 		</tr>
 		<tr>
 			<td>住所（それ以降の住所）</td>
 			<td>
-				<input name='address-soreikou' value='<?php echo(htmlspecialchars($_POST['address-soreikou'])); ?>' readonly>
+				<input name='address-detail' value='<?php echo(htmlspecialchars($_POST['address-detail'])); ?>' readonly>
 			</td>
 		</tr>
 		<tr>
 			<td>住所（建物）</td>
 			<td>
-				<input name='address-tatemono' value='<?php echo(htmlspecialchars($_POST['address-tatemono'])); ?>' readonly>
+				<input name='address-building' value='<?php echo(htmlspecialchars($_POST['address-building'])); ?>' readonly>
 			</td>
 		</tr>
 		<tr>
@@ -77,24 +77,24 @@
 			<td>このフォームを知った経由（複数選択可）</td>
 			<td>
 				<?php
-					if($_POST['keiyu-kazoku']!==''){
-						?><input style='display: block' name='keiyu-kazoku' value='<?php echo(htmlspecialchars($_POST['keiyu-kazoku'])); ?>' readonly><?php
+					if($_POST['source-family']!==''){
+						?><input style='display: block' name='source-family' value='<?php echo(htmlspecialchars($_POST['source-family'])); ?>' readonly><?php
 					}
 
-					if($_POST['keiyu-tomodati']!==''){
-						?><input style='display: block' name='keiyu-tomodati' value='<?php echo(htmlspecialchars($_POST['keiyu-tomodati'])); ?>' readonly><?php
+					if($_POST['source-friend']!==''){
+						?><input style='display: block' name='source-friend' value='<?php echo(htmlspecialchars($_POST['source-friend'])); ?>' readonly><?php
 					}
 
-					if($_POST['keiyu-sinbun']!==''){
-						?><input style='display: block' name='keiyu-sinbun' value='<?php echo(htmlspecialchars($_POST['keiyu-sinbun'])); ?>' readonly><?php
+					if($_POST['source-newspaper']!==''){
+						?><input style='display: block' name='source-newspaper' value='<?php echo(htmlspecialchars($_POST['source-newspaper'])); ?>' readonly><?php
 					}
 
-					if($_POST['keiyu-radio']!==''){
-						?><input style='display: block' name='keiyu-radio' value='<?php echo(htmlspecialchars($_POST['keiyu-radio'])); ?>' readonly><?php
+					if($_POST['source-radio']!==''){
+						?><input style='display: block' name='source-radio' value='<?php echo(htmlspecialchars($_POST['source-radio'])); ?>' readonly><?php
 					}
 
-					if($_POST['keiyu-web']!==''){
-						?><input style='display: block' name='keiyu-web' value='<?php echo(htmlspecialchars($_POST['keiyu-web'])); ?>' readonly><?php
+					if($_POST['source-web']!==''){
+						?><input style='display: block' name='source-web' value='<?php echo(htmlspecialchars($_POST['source-web'])); ?>' readonly><?php
 					}
 				?>
 			</td>

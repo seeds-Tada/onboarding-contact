@@ -13,57 +13,61 @@ require_once 'validation.php';
 $addressPost = $_POST['address-post-1'].$_POST['address-post-2'];
 
 $keiyu = array(
-	"keiyu-kazoku" => $_POST['keiyu-kazoku'],
-	"keiyu-tomodati" => $_POST['keiyu-tomodati'],
-	"keiyu-sinbun" => $_POST['keiyu-sinbun'],
-	"keiyu-radio" => $_POST['keiyu-radio'],
-	"keiyu-web" => $_POST['keiyu-web']
+	"keiyu-kazoku" => $_POST['source-family'],
+	"keiyu-tomodati" => $_POST['source-friend'],
+	"keiyu-sinbun" => $_POST['source-newspaper'],
+	"keiyu-radio" => $_POST['source-radio'],
+	"keiyu-web" => $_POST['source-web']
 );
 
 $error_mes = validation();
 
 if(count($error_mes) === 0) {			//バリデーションの結果に問題がなければDBにお問合せを保存
-	$connection = connectDB();
+	$connection = connectPDO();
+	$insert_id = 1;
 	try {
-		$sql = "INSERT INTO contacts(name, name_kana, email, gender, post, prefecture, city, detail, building, contact) VALUE(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		$sql = "INSERT INTO contacts(name, name_kana, email, gender, post, prefecture, city, detail, building, contact) VALUE(:name, :name_kana, :email, :gender, :post, :prefecture, :city, :detail, :building, :contact);";
 		$stmt = $connection->prepare($sql);
-		$stmt->bind_param(
-			"ssssssssss",
-			$_POST['name-kanji'],
-			$_POST['name-hurigana'],
-			$_POST['email'],
-			$_POST['gender'],
-			$addressPost,
-			$_POST['address-todohuken'],
-			$_POST['address-shikutyoson'],
-			$_POST['address-soreikou'],
-			$_POST['address-tatemono'],
-			$_POST['contact']
-		);
+		$stmt->bindParam(':name', $_POST['name'], PDO::PARAM_STR);
+		$stmt->bindParam(':name_kana', $_POST['name-kana'], PDO::PARAM_STR);
+		$stmt->bindParam(':email', $_POST['email'], PDO::PARAM_STR);
+		$stmt->bindParam(':gender', $_POST['gender'], PDO::PARAM_STR);
+		$stmt->bindParam(':post', $addressPost, PDO::PARAM_STR);
+		$stmt->bindParam(':prefecture', $_POST['address_prefecture'], PDO::PARAM_STR);
+		$stmt->bindParam(':city', $_POST['address-city'], PDO::PARAM_STR);
+		$stmt->bindParam(':detail', $_POST['address-detail'], PDO::PARAM_STR);
+		$stmt->bindParam(':building', $_POST['address-building'], PDO::PARAM_STR);
+		$stmt->bindParam(':contact', $_POST['contact'], PDO::PARAM_STR);
 		$stmt->execute();
-		$insert_id = $stmt->insert_id;
-		$stmt->close();
+		$insert_id = (int)($connection->lastInsertId());
+		$stmt = null;
+	}catch(PDOException $e) {
+		echo("db error. contacts table.<br>");
+		echo($e->getMessage());
+	}catch(Exception $e) {
+		echo("error<br>");
+		echo($e->getMessage());
+	}
 
+	try{
 		foreach($keiyu as $key => $val) {
 			if($val !== "") {
-				$sql = "INSERT INTO sources(contacts_id, source) VALUE(?, ?);";
+				$sql = "INSERT INTO sources(contacts_id, source) VALUE(:contacts_id, :source);";
 				$stmt = $connection->prepare($sql);
-				$stmt->bind_param(
-					"is",
-					$insert_id,
-					$val
-				);
+				$stmt->bindParam(':contacts_id', $insert_id, PDO::PARAM_INT);
+				$stmt->bindParam(':source', $val, PDO::PARAM_STR);
 				$stmt->execute();
-				$stmt->close();
+				$stmt = null;
 			}
 		}
-	}catch(PDOException $e) {
-		echo("error");
-	}catch(Exception $e) {
-		echo("error");
-		echo($e);
+	}catch(PDOException $e){
+		echo("db error. sources table.<br>");
+		echo($e->getMessage());
+	}catch(Exception $e){
+		echo("error<br>");
+		echo($e->getMessage());
 	}
-	/*
+/*
 	PHPMailerの実装
 
 	gmailのAppPasswordを設定するためには、
@@ -106,7 +110,7 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 	}catch(Exception $e) {
 		echo("メールの送信に失敗しました: {$mail->ErrorInfo}");
 	}
-	*/
+*/
 }else {									//バリデーションの結果に問題があれば入力画面へ
 	include'components/input.php';
 	if(!empty($_POST['input'])) {		//初めてページに訪れた時にはバリデーション結果を表示しない
