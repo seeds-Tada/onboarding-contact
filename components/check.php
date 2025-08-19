@@ -1,3 +1,17 @@
+<?php
+require './enums/gender.php';
+require './enums/prefecture.php';
+require './enums/source.php';
+
+var_dump($genders);
+echo("<br><br>");
+var_dump($prefectures);
+echo("<br><br>");
+var_dump($sources);
+echo("<br><br>");
+var_dump($_POST);
+echo("<br><br>");
+?>
 <form action='' method='POST'>
 	<table>
 		<tr>
@@ -22,16 +36,13 @@
 			<td>性別</td>
 			<td>
 				<?php
-					if($_POST['gender'] === "male") {
-						?>
-						<input name='gender' value='male' hidden>
-						<input value='男性' readonly>
-						<?php
-					}else if($_POST['gender'] === "female"){
-						?>
-						<input name='gender' value='female' hidden>
-						<input value='女性' readonly>
-						<?php
+					foreach($genders as $key => $val) {
+						if($key === $_POST['gender']){
+							?>
+							<input name='gender' value='<?php echo($key); ?>' hidden>
+							<input value='<?php echo($val); ?>' readonly>
+							<?php
+						}
 					}
 				?>
 			</td>
@@ -69,7 +80,7 @@
 		<tr>
 			<td>お問合せ内容</td>
 			<td>
-				<input name='contact' value='<?php echo(htmlspecialchars($_POST['contact'])); ?>' readonly>
+				<textarea name='contact' readonly><?php echo((htmlspecialchars($_POST['contact'])). PHP_EOL); ?></textarea>
 			</td>
 		</tr>
 
@@ -77,24 +88,10 @@
 			<td>このフォームを知った経由（複数選択可）</td>
 			<td>
 				<?php
-					if($_POST['source-family']!==''){
-						?><input style='display: block' name='source-family' value='<?php echo(htmlspecialchars($_POST['source-family'])); ?>' readonly><?php
-					}
-
-					if($_POST['source-friend']!==''){
-						?><input style='display: block' name='source-friend' value='<?php echo(htmlspecialchars($_POST['source-friend'])); ?>' readonly><?php
-					}
-
-					if($_POST['source-newspaper']!==''){
-						?><input style='display: block' name='source-newspaper' value='<?php echo(htmlspecialchars($_POST['source-newspaper'])); ?>' readonly><?php
-					}
-
-					if($_POST['source-radio']!==''){
-						?><input style='display: block' name='source-radio' value='<?php echo(htmlspecialchars($_POST['source-radio'])); ?>' readonly><?php
-					}
-
-					if($_POST['source-web']!==''){
-						?><input style='display: block' name='source-web' value='<?php echo(htmlspecialchars($_POST['source-web'])); ?>' readonly><?php
+					foreach($sources as $key => $val) {
+						if(!empty($_POST['source'][$key])){
+							?><input style='display: block' name='source[<?php echo($key); ?>]' value='<?php echo($val); ?>' readonly><?php
+						}
 					}
 				?>
 			</td>

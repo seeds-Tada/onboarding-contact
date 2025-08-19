@@ -1,5 +1,7 @@
 <?php
+require './enums/gender.php';
 require './enums/prefecture.php';
+require './enums/source.php';
 ?>
 <form action='' method='POST'>
 	<table>
@@ -88,40 +90,18 @@ require './enums/prefecture.php';
 		</tr>
 		<tr>
 			<td>お問い合わせ内容<span style='color: red'>※</span></td>
-			<td><textarea name='contact' ><?php  echo(htmlspecialchars($_POST['contact']));?></textarea></td>
+			<td><textarea name='contact' ><?php  echo((htmlspecialchars($_POST['contact'])). PHP_EOL);?></textarea></td>
 		</tr>
 		<tr>
 			<td>このフォームを知った経由（複数選択可）</td>
 			<td>
 				<?php
-					if($_POST['source-family']!==''){
-						?><label style='display: block'>家族から聞いて<input type='checkbox' name='source-family' value='家族から聞いて' checked></label><?
-					}else {
-						?><label style='display: block'>家族から聞いて<input type='checkbox' name='source-family' value='家族から聞いて'></label><?
-					}
-
-					if($_POST['source-friend']!==''){
-						?><label style='display: block'>友達から聞いて<input type='checkbox' name='source-friend' value='友達から聞いて' checked></label><?php
-					}else {
-						?><label style='display: block'>友達から聞いて<input type='checkbox' name='source-friend' value='友達から聞いて'></label><?php
-					}
-
-					if($_POST['source-newspaper']!==''){
-						?><label style='display: block'>新聞<input type='checkbox' name='source-newspaper' value='新聞' checked></label><?php
-					}else {
-						?><label style='display: block'>新聞<input type='checkbox' name='source-newspaper' value='新聞'></label><?php
-					}
-
-					if($_POST['source-radio']!==''){
-						?><label style='display: block'>ラジオ<input type='checkbox' name='source-radio' value='ラジオ' checked></label><?php
-					}else {
-						?><label style='display: block'>ラジオ<input type='checkbox' name='source-radio' value='ラジオ'></label><?php
-					}
-
-					if($_POST['source-web']!==''){
-						?><label style='display: block'>Web<input type='checkbox' name='source-web' value='web' checked></label><?php
-					}else {
-						?><label style='display: block'>Web<input type='checkbox' name='source-web' value='web'></label><?php
+					foreach($sources as $key => $val) {
+						if(!empty($_POST['source'][$key])){
+							?><label style='display: block'><?php echo($val); ?><input type='checkbox' name='source[<?php echo($key); ?>]' value='<?php echo($val); ?>' checked></label><?
+						}else {
+							?><label style='display: block'><?php echo($val); ?><input type='checkbox' name='source[<?php echo($key); ?>]' value='<?php echo($val); ?>'></label><?
+						}
 					}
 				?>
 			</td>

@@ -1,6 +1,8 @@
 <?php
 function validation() {
+	require './enums/gender.php';
 	require './enums/prefecture.php';
+	require './enums/source.php';
 	
 	$error_msg = [];
 
@@ -74,14 +76,8 @@ function validation() {
 		if(!is_string($_POST['address_prefecture'])) {
 			array_push($error_msg, "住所(都道府県)を正しく入力してください。");
 		}else {
-			$bool = true;
-			foreach($prefectures as $prefecture) {
-				if($prefecture === $_POST['address_prefecture']) {
-					$bool = false;
-				}
-			}
-			if($bool) {
-				array_push($error_msg, "住所(都道府県)を正しく選択してください。");
+			if(!in_array($_POST['address_prefecture'], $prefectures)) {
+			    array_push($error_msg, "住所(都道府県)を正しく選択してください。");
 			}
 		}
 	}

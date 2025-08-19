@@ -27,6 +27,6 @@ function connectPDO()
         return $connection;
     }catch(PDOException $e)
     {
-        die("Connection failed: " . $e-getMessage());
+        die("Connection failed: " . $e->getMessage());
     }
 }

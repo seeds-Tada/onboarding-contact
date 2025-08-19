@@ -4,29 +4,22 @@ require_once 'private/database.php';
 // 実装
 //http://localhost/admin.php
 
-$keiyuArray = [];
 $contactArray = [];
 $connection = connectPDO();
 try {
-	$keiyuArray = [];
 	$sql = "SELECT * FROM sources;";
 	$stmt = $connection->query($sql);
 	$result_sources = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	foreach($result_sources as $source) {
-		$keiyuArray[] = $source;
-	}
 	$stmt = null;
 
-	$contactArray = [];
 	$sql = "SELECT * FROM contacts;";
 	$stmt = $connection->query($sql);
 	$result_contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 	foreach($result_contacts as $contact) {
 		$contact['sources'] = [];
-		foreach($keiyuArray as $keiyu) {
-			if($contact['id'] === $keiyu['contacts_id']) {
-				array_push($contact['sources'], $keiyu['source']);
+		foreach($result_sources as $source) {
+			if($contact['id'] === $source['contacts_id']) {
+				array_push($contact['sources'], $source['source']);
 			}
 		}
 		$contactArray[] = $contact;

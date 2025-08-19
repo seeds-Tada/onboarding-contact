@@ -6,6 +6,8 @@ require_once 'private/bootstrap.php';
 require_once 'private/database.php';
 require_once 'validation.php';
 
+//var_dump(array_key_exists('gender', $genders));
+
 // 実装
 $_POST['name'] = $_POST['name'] ?? "";						//必須
 $_POST['name-kana'] = $_POST['name-kana'] ?? "";				//必須
@@ -21,11 +23,12 @@ $_POST['address-building'] = $_POST['address-building'] ?? "";			//必須では�
 
 $_POST['contact'] = $_POST['contact'] ?? "";							//必須
 
-$_POST['source-family'] = $_POST['source-family'] ?? "";					//必須ではない
-$_POST['source-friend'] = $_POST['source-friend'] ?? "";				//必須ではない
-$_POST['source-newspaper'] = $_POST['source-newspaper'] ?? "";					//必須ではない
-$_POST['source-radio'] = $_POST['source-radio'] ?? "";					//必須ではない
-$_POST['source-web'] = $_POST['source-web'] ?? "";						//必須ではない
+// $_POST['source-family'] = $_POST['source-family'] ?? "";					//必須ではない
+// $_POST['source-friend'] = $_POST['source-friend'] ?? "";				//必須ではない
+// $_POST['source-newspaper'] = $_POST['source-newspaper'] ?? "";					//必須ではない
+// $_POST['source-radio'] = $_POST['source-radio'] ?? "";					//必須ではない
+// $_POST['source-web'] = $_POST['source-web'] ?? "";						//必須ではない
+$_POST['source'] = $_POST['source'] ?? "";
 
 $error_mes = validation();
 ?>

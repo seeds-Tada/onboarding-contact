@@ -1,14 +1,12 @@
 <?php
-require_once 'PHPMailer/src/Exception.php';
-require_once 'PHPMailer/src/PHPMailer.php';
-require_once 'PHPMailer/src/SMTP.php';
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 require_once 'private/bootstrap.php';
 require_once 'private/database.php';
 require_once 'validation.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+require_once 'vendor/autoload.php';
+
 // 実装
 $addressPost = $_POST['address-post-1'].$_POST['address-post-2'];
 
@@ -79,38 +77,32 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 	
 	$mail = new PHPMailer(true);
 
-	$smtp_Username = 'yourMailAddress';			//gmailのSMTPを利用するためのユーザー名
-	$smtp_Password = 'yourAppPasswprd';			//gmailのSMTPを利用するためのアプリパスワード
-
-	$From_mailAddress = 'fromEmail@example.cpm';//メールの送信元のメールアドレス
-	$From_name = '';							//メールの送信元の名前
+	$From_mailAddress = 'From@example.com';
+	$From_name = 'From';							//メールの送信元の名前
 	$To_mailAddress = $_POST['email'];			//メールの送信先のメールアドレス
-	$To_name = '';								//メールの送信先の名前
+	$To_name = 'To';								//メールの送信先の名前
 
 	$mail_subject = 'onboarding-contactのお問合せメール';								//メールのタイトル
 	$mail_body = nl2br(htmlspecialchars($_POST['contact'], ENT_QUOTES, 'UTF-8'));;	 //メールの本文
 
 	try {
-		// $mail->CharSet = 'UTF-8';
-		// $mail->Encoding = 'base64';
+		$mail->CharSet = 'UTF-8';
+		$mail->Encoding = 'base64';
 
-		// $mail->isSMTP();
-		// $mail->Host = 'smtp.gmail.com';
-		// $mail->SMTPAuth = true;
-		// $mail->Username = $smtp_Username;
-		// $mail->Password = $smtp_Password;
-		// $mail->SMTPSecure = 'tls';
-		// $mail->Port = 587;
+		$mail->isSMTP();
+		$mail->Host = 'mailhog';
+		$mail->SMTPAuth = false;
+		$mail->Port = 1025;
 
-		// $mail->setFrom($From_mailAddress, $From_name);
-		// $mail->addAddress($To_mailAddress, $To_name);
+		$mail->setFrom($From_mailAddress, $From_name);
+		$mail->addAddress($To_mailAddress, $To_name);
 
-		// $mail->isHTML();
-		// $mail->Subject = $mail_subject;
-		// $mail->Body = $mail_body;
+		$mail->isHTML();
+		$mail->Subject = $mail_subject;
+		$mail->Body = $mail_body;
 
-		// $mail->send();
-		// $mail_result = true;
+		$mail->send();
+		$mail_result = true;
 	}catch(Exception $e) {
 		echo("メールの送信に失敗しました: {$mail->ErrorInfo}");
 	}
@@ -126,3 +118,8 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 
 <!-- 描画するHTML -->
 <p>お問い合わせありがとうございました。</p>
+<?php
+if($mail_result){
+	echo("メールの送信に成功しました。");
+}
+?>
