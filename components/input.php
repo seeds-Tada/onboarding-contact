@@ -25,20 +25,9 @@ require './enums/source.php';
 			<td>性別<span style='color: red'>※</span></td>
 			<td>
 				<?php
-					if($_POST['gender'] === 'female') {
+					foreach($enums_genders as $key => $val){
 						?>
-						<label>女性<input type='radio' name='gender' value='female' checked ></label>
-						<label>男性<input type='radio' name='gender' value='male' ></label>
-						<?php
-					}else if($_POST['gender'] === 'male') {
-						?>
-						<label>女性<input type='radio' name='gender' value='female' ></label>
-						<label>男性<input type='radio' name='gender' value='male' checked ></label>
-						<?php
-					}else {
-						?>
-						<label>女性<input type='radio' name='gender' value='female' ></label>
-						<label>男性<input type='radio' name='gender' value='male' ></label>
+						<label><?php echo($val); ?><input type='radio' name='gender' value='<?php echo($key); ?>' <?php if($_POST['gender'] === $key){echo('checked');} ?>></label>
 						<?php
 					}
 				?>
@@ -57,20 +46,9 @@ require './enums/source.php';
 			<td>
 				<select name='address_prefecture' >
 					<?php
-						if(!empty($_POST['address_prefecture']) || in_array($_POST['address_prefecture'], $prefectures)) {
-							?><option value='' disabled>選択してください</option><?php
-							foreach($prefectures as $prefecture) {
-								if($prefecture === $_POST['address_prefecture']) {
-									?><option value='<?php echo($prefecture); ?>' selected><?php echo($prefecture); ?></option><?php
-								}else {
-									?><option value='<?php echo($prefecture); ?>'><?php echo($prefecture); ?></option><?php
-								}
-							}
-						}else {
-							?><option value='' selected disabled>選択してください</option><?php
-							foreach($prefectures as $prefecture) {
-								?><option value='<?php echo($prefecture); ?>'><?php echo($prefecture); ?></option><?php
-							}
+						?><option value='' <?php if(!in_array($_POST['address_prefecture'], $enums_prefectures)){echo('selected');} ?> disabled>選択してください</option><?php
+						foreach($enums_prefectures as $prefecture) {
+							?><option value='<?php echo($prefecture); ?>' <?php if($_POST['address_prefecture'] === $prefecture) {echo('selected');} ?>><?php echo($prefecture); ?></option><?php
 						}
 					?>
 				</select>
@@ -90,18 +68,14 @@ require './enums/source.php';
 		</tr>
 		<tr>
 			<td>お問い合わせ内容<span style='color: red'>※</span></td>
-			<td><textarea name='contact' ><?php  echo((htmlspecialchars($_POST['contact'])). PHP_EOL);?></textarea></td>
+			<td><textarea name='contact' ><?php echo(htmlspecialchars($_POST['contact']) . PHP_EOL); ?></textarea></td>
 		</tr>
 		<tr>
 			<td>このフォームを知った経由（複数選択可）</td>
 			<td>
 				<?php
-					foreach($sources as $key => $val) {
-						if(!empty($_POST['source'][$key])){
-							?><label style='display: block'><?php echo($val); ?><input type='checkbox' name='source[<?php echo($key); ?>]' value='<?php echo($val); ?>' checked></label><?
-						}else {
-							?><label style='display: block'><?php echo($val); ?><input type='checkbox' name='source[<?php echo($key); ?>]' value='<?php echo($val); ?>'></label><?
-						}
+					foreach($enums_sources as $key => $val) {
+						?><label style='display: block'><?php echo($val); ?><input type='checkbox' name='source[<?php echo($key); ?>]' value='<?php echo($val); ?>' <?php if(!empty($_POST['source'][$key])){echo('checked');}?>></label><?
 					}
 				?>
 			</td>

@@ -1,5 +1,5 @@
 <?php
-$sources = array(
+$enums_sources = array(
 	'family' => '家族から聞いて',
 	'friend' => '友達から聞いて',
 	'newspaper' => '新聞',

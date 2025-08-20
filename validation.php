@@ -39,9 +39,9 @@ function validation() {
 		array_push($error_msg, "性別が入力されていません。");
 	}else {
 		if(!is_string($_POST['gender'])) {
-			array_push($error_msg, "性別をに文字列を入力してください。");
+			array_push($error_msg, "性別を正しくを入力してください。");
 		}else {
-			if(!($_POST['gender'] === "female" || $_POST['gender'] === "male")) {
+			if(!array_key_exists($_POST['gender'], $enums_genders)){
 				array_push($error_msg, "性別を正しく入力してください。");
 			}
 		}
@@ -76,7 +76,7 @@ function validation() {
 		if(!is_string($_POST['address_prefecture'])) {
 			array_push($error_msg, "住所(都道府県)を正しく入力してください。");
 		}else {
-			if(!in_array($_POST['address_prefecture'], $prefectures)) {
+			if(!in_array($_POST['address_prefecture'], $enums_prefectures)) {
 			    array_push($error_msg, "住所(都道府県)を正しく選択してください。");
 			}
 		}
@@ -110,45 +110,15 @@ function validation() {
 		array_push($error_msg, "お問合せ内容に文字列を入力してください。");
 	}
 
-	
-	$keiyu_bool = false;
-	//経由　家族
-	if(!empty($_POST['source-family'])) {
-		if(!is_string($_POST['source-family']) || $_POST['source-family'] !== "家族から聞いて") {
-			$keiyu_bool = true;
+	//フォームを知った経由
+	if(!empty($_POST['source'])){
+		if(empty(array_intersect_key($enums_sources, $_POST['source']))){
+			array_push($error_msg, "このフォームを知った経由を正しく選択してください。");				//sourcesとkeyが一致しないものがあるかどうか
+		}else{
+			if(array_intersect_key($enums_sources, $_POST['source']) !== $_POST['source']){		//sourcesとvalが一致しないものがあるかどうか
+				array_push($error_msg, "このフォームを知った経由を正しく選択してください。");
+			}
 		}
-	}
-
-	//経由　友達
-	if(!empty($_POST['source-friend'])) {
-		if(!is_string($_POST['source-friend']) || $_POST['source-friend'] !== "友達から聞いて") {
-			$keiyu_bool = true;
-		}
-	}
-
-	//経由　新聞
-	if(!empty($_POST['source-newspaper'])) {
-		if(!is_string($_POST['source-newspaper']) || $_POST['source-newspaper'] !== "新聞") {
-			$keiyu_bool = true;
-		}
-	}
-
-	//経由　ラジオ
-	if(!empty($_POST['source-radio'])) {
-		if(!is_string($_POST['source-radio']) || $_POST['source-radio'] !== "ラジオ") {
-			$keiyu_bool = true;
-		}
-	}
-
-	//経由　web
-	if(!empty($_POST['source-web'])) {
-		if(!is_string($_POST['source-web']) || $_POST['source-web'] !== "web") {
-			$keiyu_bool = true;
-		}
-	}
-
-	if($keiyu_bool) {
-		array_push($error_msg, "このフォームを知った経由を正しく選択してください。");
 	}
 
 	return $error_msg;

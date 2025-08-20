@@ -2,15 +2,6 @@
 require './enums/gender.php';
 require './enums/prefecture.php';
 require './enums/source.php';
-
-var_dump($genders);
-echo("<br><br>");
-var_dump($prefectures);
-echo("<br><br>");
-var_dump($sources);
-echo("<br><br>");
-var_dump($_POST);
-echo("<br><br>");
 ?>
 <form action='' method='POST'>
 	<table>
@@ -36,8 +27,8 @@ echo("<br><br>");
 			<td>性別</td>
 			<td>
 				<?php
-					foreach($genders as $key => $val) {
-						if($key === $_POST['gender']){
+					foreach($enums_genders as $key => $val) {
+						if($_POST['gender'] === $key){
 							?>
 							<input name='gender' value='<?php echo($key); ?>' hidden>
 							<input value='<?php echo($val); ?>' readonly>
@@ -80,7 +71,7 @@ echo("<br><br>");
 		<tr>
 			<td>お問合せ内容</td>
 			<td>
-				<textarea name='contact' readonly><?php echo((htmlspecialchars($_POST['contact'])). PHP_EOL); ?></textarea>
+				<textarea name='contact' readonly><?php echo(htmlspecialchars($_POST['contact']) . PHP_EOL); ?></textarea>
 			</td>
 		</tr>
 
@@ -88,7 +79,7 @@ echo("<br><br>");
 			<td>このフォームを知った経由（複数選択可）</td>
 			<td>
 				<?php
-					foreach($sources as $key => $val) {
+					foreach($enums_sources as $key => $val) {
 						if(!empty($_POST['source'][$key])){
 							?><input style='display: block' name='source[<?php echo($key); ?>]' value='<?php echo($val); ?>' readonly><?php
 						}
