@@ -68,7 +68,7 @@ require './enums/source.php';
 		</tr>
 		<tr>
 			<td>お問い合わせ内容<span style='color: red'>※</span></td>
-			<td><textarea name='contact' ><?php echo(htmlspecialchars($_POST['contact']) . PHP_EOL); ?></textarea></td>
+			<td><textarea name='contact' ><?php echo(htmlspecialchars($_POST['contact'])); ?></textarea></td>
 		</tr>
 		<tr>
 			<td>このフォームを知った経由（複数選択可）</td>

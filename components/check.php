@@ -71,7 +71,7 @@ require './enums/source.php';
 		<tr>
 			<td>お問合せ内容</td>
 			<td>
-				<textarea name='contact' readonly><?php echo(htmlspecialchars($_POST['contact']) . PHP_EOL); ?></textarea>
+				<textarea name='contact' readonly><?php echo(htmlspecialchars($_POST['contact'])); ?></textarea>
 			</td>
 		</tr>
 

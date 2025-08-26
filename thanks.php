@@ -43,11 +43,11 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 		}catch(PDOException $e) {
 			echo("db error. contacts table.<br>");
 			echo($e->getMessage());
-			$connection->brollback();
+			$connection->rollback();
 		}catch(Exception $e) {
 			echo("error<br>");
 			echo($e->getMessage());
-			$connection->brollback();
+			$connection->rollback();
 		}
 
 		try{
@@ -64,11 +64,11 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 		}catch(PDOException $e){
 			echo("db error. sources table.<br>");
 			echo($e->getMessage());
-			$connection->brollback();
+			$connection->rollback();
 		}catch(Exception $e){
 			echo("error<br>");
 			echo($e->getMessage());
-			$connection->brollback();
+			$connection->rollback();
 		}
 		$connection->commit();
 
@@ -122,7 +122,7 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 <!-- 描画するHTML -->
 <p>お問い合わせありがとうございました。</p>
 <?php
-if($mail_result){
+if(!empty($mail_result) && $mail_result){
 	echo("メールの送信に成功しました。");
 }
 ?>

@@ -68,7 +68,11 @@ try {
 						if($key !== 'id') {
 							if($key !== 'sources') {
 								if($key !== 'post') {
-									echo("<td>" . htmlspecialchars($val) . "</td>");
+									if($key === 'contact') {
+										echo("<td>" . nl2br(htmlspecialchars($val)) . "</td>");
+									}else {
+										echo("<td>" . htmlspecialchars($val) . "</td>");
+									}
 								}else {
 									echo("<td>" . htmlspecialchars(substr_replace($val, "-", 3, 0)) . "</td>");
 								}
