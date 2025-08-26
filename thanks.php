@@ -83,7 +83,7 @@ if(count($error_mes) === 0) {			//バリデーションの結果に問題がな�
 		$To_name = 'To';								//メールの送信先の名前
 
 		$mail_subject = 'onboarding-contactのお問合せメール';								//メールのタイトル
-		$mail_body = nl2br(htmlspecialchars($_POST['contact'], ENT_QUOTES, 'UTF-8'));;	 //メールの本文
+		$mail_body = nl2br(htmlspecialchars($_POST['contact'], ENT_QUOTES, 'UTF-8'));	 //メールの本文
 
 		try {
 			$mail->CharSet = 'UTF-8';
